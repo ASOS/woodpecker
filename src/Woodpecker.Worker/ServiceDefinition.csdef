@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="Woodpecker.Worker" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
+  <WorkerRole name="Woodpecker.Worker.Role" vmsize="Medium">
+    <Imports>
+      <Import moduleName="Diagnostics" />
+    </Imports>
+    <ConfigurationSettings>
+      <Setting name="Woodpecker.Core.ServiceBusConnectionString" />
+      <Setting name="Woodpecker.Core.TableStorageConnectionString" />
+      <Setting name="Woodpecker.Core.SourceTableName" />
+      <Setting name="Woodpecker.Core.ClusterName" />
+    </ConfigurationSettings>
+  </WorkerRole>
+</ServiceDefinition>

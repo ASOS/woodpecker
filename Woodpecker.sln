@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BF1360C0-091A-4B3C-B0F1-98FB17EAFE65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F7B47BC6-5236-43EA-98E9-441437237E66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woodpecker.Core", "src\Woodpecker.Core\Woodpecker.Core.csproj", "{BB96509C-25E9-4271-8185-6A4B263AA10A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woodpecker.Core.Tests", "test\Woodpecker.Core.Tests\Woodpecker.Core.Tests.csproj", "{41DBD26D-A979-466D-A40D-37689EEA2D91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woodpecker.ConsoleWorker", "src\Woodpecker.ConsoleWorker\Woodpecker.ConsoleWorker.csproj", "{E17D51F4-D8BE-42BE-A024-6056EAA41946}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Woodpecker.Worker", "src\Woodpecker.Worker\Woodpecker.Worker.ccproj", "{3C4E6660-E46E-4820-A86F-43960C7D8CEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woodpecker.Worker.Role", "src\Woodpecker.Worker.Role\Woodpecker.Worker.Role.csproj", "{A9B3CB74-F6A0-474E-85AB-CEF97C2F9A58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB96509C-25E9-4271-8185-6A4B263AA10A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB96509C-25E9-4271-8185-6A4B263AA10A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB96509C-25E9-4271-8185-6A4B263AA10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB96509C-25E9-4271-8185-6A4B263AA10A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41DBD26D-A979-466D-A40D-37689EEA2D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41DBD26D-A979-466D-A40D-37689EEA2D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41DBD26D-A979-466D-A40D-37689EEA2D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41DBD26D-A979-466D-A40D-37689EEA2D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17D51F4-D8BE-42BE-A024-6056EAA41946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17D51F4-D8BE-42BE-A024-6056EAA41946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E17D51F4-D8BE-42BE-A024-6056EAA41946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E17D51F4-D8BE-42BE-A024-6056EAA41946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C4E6660-E46E-4820-A86F-43960C7D8CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C4E6660-E46E-4820-A86F-43960C7D8CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C4E6660-E46E-4820-A86F-43960C7D8CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C4E6660-E46E-4820-A86F-43960C7D8CEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9B3CB74-F6A0-474E-85AB-CEF97C2F9A58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9B3CB74-F6A0-474E-85AB-CEF97C2F9A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9B3CB74-F6A0-474E-85AB-CEF97C2F9A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9B3CB74-F6A0-474E-85AB-CEF97C2F9A58}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB96509C-25E9-4271-8185-6A4B263AA10A} = {BF1360C0-091A-4B3C-B0F1-98FB17EAFE65}
+		{41DBD26D-A979-466D-A40D-37689EEA2D91} = {F7B47BC6-5236-43EA-98E9-441437237E66}
+		{E17D51F4-D8BE-42BE-A024-6056EAA41946} = {BF1360C0-091A-4B3C-B0F1-98FB17EAFE65}
+		{3C4E6660-E46E-4820-A86F-43960C7D8CEE} = {BF1360C0-091A-4B3C-B0F1-98FB17EAFE65}
+		{A9B3CB74-F6A0-474E-85AB-CEF97C2F9A58} = {BF1360C0-091A-4B3C-B0F1-98FB17EAFE65}
+	EndGlobalSection
+EndGlobal
