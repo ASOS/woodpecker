@@ -192,10 +192,10 @@ function Package([ref] $packagePath)
 {
 
 
-   . $env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe ..\src\ConveyorBelt\ConveyorBelt.ccproj `
+   . $env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe ..\src\Woodpecker.Worker\Woodpecker.Worker.ccproj `
             /target:Publish `
             /p:VisualStudioVersion=12.0`;Configuration=Release`;TargetProfile=Cloud
-     $packagePath.Value = ((GetSolutionRootFolder) + "\src\ConveyorBelt\bin\Release\app.publish\ConveyorBelt.cspkg")
+     $packagePath.Value = ((GetSolutionRootFolder) + "\src\Woodpecker.Worker\bin\Release\app.publish\Woodpecker.Worker.cspkg")
      $val = ($packagePath).Value
      Write-Host "Package created at $val" -foregroundcolor "green"
 }
