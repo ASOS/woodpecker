@@ -43,6 +43,7 @@ namespace Woodpecker.Core
                     if (source.IsActive && DateTimeOffset.Now > source.LastOffset.AddMinutes(source.IntervalMinutes))
                         await DoScheduleAsync(source);
                 }
+                await _lockStore.ReleaseLockAsync(token);
             }
         }
 
