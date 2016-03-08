@@ -1,9 +1,8 @@
 {
-	"ConveyorBelt_ElasticSearchUrl":"[Your elasticsearch server]",
-	"ConveyorBelt_TableName":"[Name of the table containing sources]",
-	"ConveyorBelt_FrequencyInSeconds":"30",
-	"ConveyorBelt_ServiceBus_ConnectionString":"[A service bus connection for BeeHive worker topics]",
-	"ConveyorBelt_MappingsPath":"[where you put your mappings on, typically a read-only public Azure Blob location]",
-	"ConveyorBelt_Storage_ConnectionString":"[Connection string to the storage where ]",
-	"ConveyorBelt_Diagnostics_ConnectionString": "[Diagnostics connection string for the worker role]"
+	"Woodpecker.Core.ServiceBusConnectionString":"[A service bus connection for BeeHive worker topics]",
+	"Woodpecker.Core.TableStorageConnectionString":"[Connection string to the storage where sources table is]",
+	"Woodpecker.Core.SourceTableName":"[Name of the table containing bus sources]",
+	"Woodpecker.Core.ClusterName":"[Name of your cluster - MUST ONLY CONTAIN alphanumeric]",
+	"Woodpecker.Deployment.ConnectionString":"[Connection string to the storage where deployment package will be temporarily copied to as part of normal Azure deployment]",
+	"Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString": "[Diagnostics connection string for the worker role]"
 }
