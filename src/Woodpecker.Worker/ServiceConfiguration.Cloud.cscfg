@@ -3,11 +3,11 @@
   <Role name="Woodpecker.Worker.Role">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="Woodpecker.Core.ServiceBusConnectionString" value="" />
-      <Setting name="Woodpecker.Core.TableStorageConnectionString" value="" />
-      <Setting name="Woodpecker.Core.SourceTableName" value="" />
-      <Setting name="Woodpecker.Core.ClusterName" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="###__Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString__###" />
+      <Setting name="Woodpecker.Core.ServiceBusConnectionString" value="###__Woodpecker.Core.ServiceBusConnectionString__###" />
+      <Setting name="Woodpecker.Core.TableStorageConnectionString" value="###__Woodpecker.Core.TableStorageConnectionString__###" />
+      <Setting name="Woodpecker.Core.SourceTableName" value="###__Woodpecker.Core.SourceTableName__###" />
+      <Setting name="Woodpecker.Core.ClusterName" value="###__Woodpecker.Core.ClusterName__###" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>
