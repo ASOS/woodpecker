@@ -19,11 +19,11 @@ namespace Woodpecker.Core.Persistence
             var table = client.GetTableReference(source.DestinationTableName);
             await table.CreateIfNotExistsAsync();
             var copy = results.ToArray(); // have to do this because of batching
-            var groups = copy.GroupBy(x => x.TimeCaptured.UtcDateTime.ToString("dd/MM/yyyy HH:mm:00 +00:00"));
+            var groups = copy.GroupBy(x => x.TimeCaptured.UtcDateTime.ToString("yyyy-MM-dd HH:mm:00"));
 
             foreach (var g in groups)
             {
-                var minuteOffset = DateTimeOffset.Parse(g.Key);
+                var minuteOffset = new DateTimeOffset(DateTime.Parse(g.Key), TimeSpan.Zero);
                 var shardKey = (DateTimeOffset.MaxValue.Ticks - minuteOffset.Ticks).ToString("D19");
                 var list = new List<TableBatchOperation>();
                 var batchOperation = new TableBatchOperation();
