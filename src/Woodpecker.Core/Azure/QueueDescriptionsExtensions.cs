@@ -5,9 +5,9 @@ namespace Woodpecker.Core.Azure
 {
     public static class QueueDescriptionsExtensions
     {
-        public static PeckResult Peck(this QueueDescription queueDescription, BusSource source)
+        public static BusPeckResult Peck(this QueueDescription queueDescription, PeckSource source)
         {
-            var peckResult = new PeckResult()
+            var peckResult = new BusPeckResult()
             {
                 ActiveMessageCount = queueDescription.MessageCountDetails.ActiveMessageCount,
                 DeadLetterMessageCount = queueDescription.MessageCountDetails.DeadLetterMessageCount,
@@ -23,9 +23,9 @@ namespace Woodpecker.Core.Azure
             return peckResult;
         }
 
-        public static PeckResult Peck(this TopicDescription topicDescription, BusSource source)
+        public static BusPeckResult Peck(this TopicDescription topicDescription, PeckSource source)
         {
-            var peckResult = new PeckResult()
+            var peckResult = new BusPeckResult()
             {
                 ActiveMessageCount = topicDescription.MessageCountDetails.ActiveMessageCount,
                 DeadLetterMessageCount = topicDescription.MessageCountDetails.DeadLetterMessageCount,
@@ -41,9 +41,9 @@ namespace Woodpecker.Core.Azure
             return peckResult;
         }
 
-        public static PeckResult Peck(this SubscriptionDescription subscriptionDescription, BusSource source)
+        public static BusPeckResult Peck(this SubscriptionDescription subscriptionDescription, PeckSource source)
         {
-            var peckResult = new PeckResult()
+            var peckResult = new BusPeckResult()
             {
                 ActiveMessageCount = subscriptionDescription.MessageCountDetails.ActiveMessageCount,
                 DeadLetterMessageCount = subscriptionDescription.MessageCountDetails.DeadLetterMessageCount,

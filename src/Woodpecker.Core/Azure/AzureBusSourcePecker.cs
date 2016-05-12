@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.ServiceBus;
+using Microsoft.WindowsAzure.Storage.Table;
+using Woodpecker.Core.Internal;
 
 namespace Woodpecker.Core.Azure
 {
-    public class AzureServiceBusSourcePecker : IBusSourcePecker
+    public class AzureServiceBusSourcePecker : ISourcePecker
     {
-        public async Task<IEnumerable<PeckResult>> PeckAsync(BusSource source)
+        public async Task<IEnumerable<ITableEntity>> PeckAsync(PeckSource source)
         {
-            var peckResults = new List<PeckResult>();
+            var peckResults = new List<BusPeckResult>();
             var namespaceManager = NamespaceManager.CreateFromConnectionString(source.SourceConnectionString);
             foreach (var topic in await namespaceManager.GetTopicsAsync())
             {
@@ -24,7 +27,7 @@ namespace Woodpecker.Core.Azure
                 peckResults.Add(q.Peck(source));
             }
 
-            return peckResults;
+            return peckResults.Select(x => x.ToEntity());
         }
     }
 }

@@ -15,13 +15,14 @@ namespace Woodpecker.Core.Tests
 {
 
     /// <summary>
+    /// !!!!!! NOTE: !!!!!!!
     /// This test requires an environment variable to have been set:
     /// Machine/User: AzureServiceBusConnectionStringForTest=... 
     /// </summary>
-    public class IntegrationTests
+    public class ServiceBusIntegrationTests
     {
         private string _connectionString;
-        public IntegrationTests()
+        public ServiceBusIntegrationTests()
         {
             _connectionString =
                 Environment.GetEnvironmentVariable("AzureServiceBusConnectionStringForTest", EnvironmentVariableTarget.Machine);
@@ -40,7 +41,7 @@ namespace Woodpecker.Core.Tests
             var queues = namespaceManager.GetQueues();
             foreach (var q in queues)
             {
-                var result = q.Peck(new BusSource()
+                var result = q.Peck(new PeckSource()
                 {
                     Name = "he he"
                 });
@@ -56,7 +57,7 @@ namespace Woodpecker.Core.Tests
             var queues = namespaceManager.GetTopics();
             foreach (var q in queues)
             {
-                var result = q.Peck(new BusSource()
+                var result = q.Peck(new PeckSource()
                 {
                     Name = "he he"
                 });
@@ -74,7 +75,7 @@ namespace Woodpecker.Core.Tests
             {
                 foreach (var q in namespaceManager.GetSubscriptions(t.Path))
                 {
-                    var result = q.Peck(new BusSource()
+                    var result = q.Peck(new PeckSource()
                     {
                         Name = "he he"
                     });

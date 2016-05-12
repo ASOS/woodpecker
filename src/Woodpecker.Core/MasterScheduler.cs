@@ -38,7 +38,7 @@ namespace Woodpecker.Core
             var token = new LockToken(_clustername);
             if (await _lockStore.TryLockAsync(token, tries: 1, timeoutMilliseconds: 30000))
             {
-                foreach (var source in _table.ExecuteQuery(new TableQuery<BusSource>()))
+                foreach (var source in _table.ExecuteQuery(new TableQuery<PeckSource>()))
                 {
                     if (source.IsActive && DateTimeOffset.Now > source.LastOffset.AddMinutes(source.IntervalMinutes))
                         await DoScheduleAsync(source);
@@ -47,17 +47,17 @@ namespace Woodpecker.Core
             }
         }
 
-        private async Task DoScheduleAsync(BusSource source)
+        private async Task DoScheduleAsync(PeckSource source)
         {
             var oldTimestamp = source.Timestamp;
             try
             {
-                await _eventQueueOperator.PushAsync(new Event(new BusSourceScheduled()
+                await _eventQueueOperator.PushAsync(new Event(new PeckSourceScheduled()
                 {
                     Source = source
                 })
                 {
-                    QueueName = QueueName.FromTopicName("BusSourceScheduled").ToString()
+                    QueueName = QueueName.FromTopicName("PeckSourceScheduled").ToString()
                 });
 
                 source.LastOffset = DateTimeOffset.UtcNow;

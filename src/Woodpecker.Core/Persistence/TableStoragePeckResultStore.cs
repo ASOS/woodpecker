@@ -12,19 +12,17 @@ namespace Woodpecker.Core.Persistence
 {
     public class TableStoragePeckResultStore : IPeckResultStore
     {
-        public async Task StoreAsync(BusSource source, IEnumerable<PeckResult> results)
+        public async Task StoreAsync(PeckSource source, IEnumerable<ITableEntity> results)
         {
             var account = CloudStorageAccount.Parse(source.DestinationConnectionString);
             var client = account.CreateCloudTableClient();
             var table = client.GetTableReference(source.DestinationTableName);
             await table.CreateIfNotExistsAsync();
             var copy = results.ToArray(); // have to do this because of batching
-            var groups = copy.GroupBy(x => x.TimeCaptured.UtcDateTime.ToString("yyyy-MM-dd HH:mm:00"));
+            var groups = copy.GroupBy(x => x.PartitionKey);
 
             foreach (var g in groups)
             {
-                var minuteOffset = new DateTimeOffset(DateTime.Parse(g.Key), TimeSpan.Zero);
-                var shardKey = (DateTimeOffset.MaxValue.Ticks - minuteOffset.Ticks).ToString("D19");
                 var list = new List<TableBatchOperation>();
                 var batchOperation = new TableBatchOperation();
                 foreach (var result in g)
@@ -34,8 +32,7 @@ namespace Woodpecker.Core.Persistence
                         list.Add(batchOperation);
                         batchOperation = new TableBatchOperation();
                     }
-
-                    batchOperation.Add(TableOperation.InsertOrReplace(result.ToEntity(shardKey)));
+                    batchOperation.Add(TableOperation.InsertOrReplace(result));
                 }
 
                 list.Add(batchOperation);

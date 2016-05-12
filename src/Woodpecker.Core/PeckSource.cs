@@ -7,7 +7,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Woodpecker.Core
 {
-    public class BusSource : TableEntity
+    public class PeckSource : TableEntity
     {
         public static readonly string PartiotionKeyValue = "Woody";
 
@@ -39,12 +39,12 @@ namespace Woodpecker.Core
         public string DestinationTableName { get; set; }
 
         /// <summary>
-        /// Actual type of the class implementing IBusSourcePecker
+        /// Actual type of the class implementing ISourcePecker
         /// </summary>
         public string StoreType { get; set; }
 
         /// <summary>
-        /// Actual type of the class implementing IBusSourcePecker
+        /// Actual type of the class implementing ISourcePecker
         /// </summary>
         public string PeckerType { get; set; }
 

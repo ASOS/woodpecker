@@ -9,8 +9,11 @@ namespace Woodpecker.Core.Internal
 {
     internal static class PeckResultExtensions
     {
-        public static DynamicTableEntity ToEntity(this PeckResult result, string shardKey)
+        public static DynamicTableEntity ToEntity(this BusPeckResult result)
         {
+            var minuteOffset = new DateTimeOffset(DateTime.Parse(result.TimeCaptured.UtcDateTime.ToString("yyyy-MM-dd HH:mm:00")), TimeSpan.Zero);
+            var shardKey = (DateTimeOffset.MaxValue.Ticks - minuteOffset.Ticks).ToString("D19");
+
             var entity = new DynamicTableEntity(shardKey,
                 string.Format("{0}_{1}", result.SourceName, result.QueueName));
 

@@ -71,13 +71,13 @@ namespace Woodpecker.Worker.Role
                     .Instance(serviceLocator),
                 Component.For<IActorConfiguration>()
                     .Instance(
-                    ActorDescriptors.FromAssemblyContaining<BusSourceScheduled>()
+                    ActorDescriptors.FromAssemblyContaining<PeckSourceScheduled>()
                     .ToConfiguration()),
                 Component.For<IFactoryActor>()
                     .ImplementedBy<FactoryActor>()
                     .LifestyleTransient(),
-                Component.For<BusSourceProcessor>()
-                    .ImplementedBy<BusSourceProcessor>()
+                Component.For<PeckSourceProcessor>()
+                    .ImplementedBy<PeckSourceProcessor>()
                     .LifestyleTransient(),
                 Component.For<ILockStore>()
                     .Instance(new AzureLockStore(new BlobSource()

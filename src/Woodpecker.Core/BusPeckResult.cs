@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Woodpecker.Core
 {
-    public class PeckResult
+    public class BusPeckResult
     {
 
         /// <summary>

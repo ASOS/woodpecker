@@ -7,8 +7,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Woodpecker.Core
 {
-    public interface IBusSourcePecker
+    public interface ISourcePecker
     {
-        Task<IEnumerable<PeckResult>> PeckAsync(BusSource source);
+        Task<IEnumerable<ITableEntity>> PeckAsync(PeckSource source);
     }
 }

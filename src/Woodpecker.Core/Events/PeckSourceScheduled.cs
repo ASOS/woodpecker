@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Woodpecker.Core.Events
 {
-    public class BusSourceScheduled
+    public class PeckSourceScheduled
     {
-        public BusSource Source { get; set; }
+        public PeckSource Source { get; set; }
     }
 }
