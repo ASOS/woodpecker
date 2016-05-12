@@ -54,7 +54,7 @@ WHERE LTRIM(RTRIM(counter_name)) IN (
                 var ofsted = new DateTimeOffset(record.collection_time_utc, TimeSpan.Zero);
                 var minuteOffset = new DateTimeOffset(DateTime.Parse(ofsted.UtcDateTime.ToString("yyyy-MM-dd HH:mm:00")), TimeSpan.Zero);
                 var shardKey = (DateTimeOffset.MaxValue.Ticks - minuteOffset.Ticks).ToString("D19");
-                var result = new DynamicTableEntity(shardKey, string.Format("{0}_{1}", record.server_name, record.database_name));
+                var result = new DynamicTableEntity(shardKey, string.Format("{0}_{1}_{2}", record.server_name, record.database_name, record.cntr_type.ToString()));
 
                 result.Properties.Add("collection_time_utc",
                     EntityProperty.GeneratePropertyForDateTimeOffset(new DateTimeOffset?(new DateTimeOffset(record.collection_time_utc, TimeSpan.Zero))));

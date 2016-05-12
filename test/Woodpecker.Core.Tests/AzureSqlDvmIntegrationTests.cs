@@ -28,7 +28,7 @@ namespace Woodpecker.Core.Tests
         }
 
         [Fact]
-        public void Test_ResourceGetCaptured()
+        public void Test_PerfGetCaptured()
         {
             var pecker = new AzureSqlDvmPerfPecker();
             var entities = pecker.PeckAsync(new PeckSource()
@@ -37,18 +37,20 @@ namespace Woodpecker.Core.Tests
             }).Result.ToArray();
 
             Assert.NotEmpty(entities);
+            var first = entities.First();
             foreach (var entity in entities)
             {
                 Assert.NotNull(entity.PartitionKey);
                 Assert.NotNull(entity.RowKey);
                 Assert.StartsWith("25", entity.PartitionKey);
                 Assert.EndsWith("999", entity.PartitionKey);
+                Assert.Equal(first.PartitionKey, entity.PartitionKey);
             }
 
         }
 
         [Fact]
-        public void ResourceGetCaptured()
+        public void Test_ResourceGetCaptured()
         {
             var pecker = new AzureSqlDvmResourcePecker();
             var entities = pecker.PeckAsync(new PeckSource()
