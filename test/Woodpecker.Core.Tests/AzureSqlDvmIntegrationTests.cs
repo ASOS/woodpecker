@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Woodpecker.Core.Sql;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Woodpecker.Core.Tests
 {
@@ -15,8 +16,9 @@ namespace Woodpecker.Core.Tests
     {
         private string _connectionString;
         
+        private readonly ITestOutputHelper output;
 
-        public AzureSqlDvmIntegrationTests()
+        public AzureSqlDvmIntegrationTests(ITestOutputHelper output)
         {
             _connectionString =
                 Environment.GetEnvironmentVariable("AzureSqlDvmConnectionStringForTest", EnvironmentVariableTarget.Machine);
@@ -26,6 +28,9 @@ namespace Woodpecker.Core.Tests
 
             if(string.IsNullOrEmpty(_connectionString))
                 throw new InvalidProgramException("Please set env var for the test");
+
+            this.output = output;
+
         }
 
         [Fact]
@@ -88,7 +93,7 @@ namespace Woodpecker.Core.Tests
                 Assert.StartsWith("25", entity.PartitionKey);
                 Assert.EndsWith("999", entity.PartitionKey);
                 Assert.Equal(first.PartitionKey, entity.PartitionKey);
-                Trace.WriteLine(((DynamicTableEntity)entity).Properties["sqldb_stats_plan_handle"].StringValue);
+                output.WriteLine(((DynamicTableEntity)entity).Properties["sqldb_stats_plan_handle"].StringValue);
             }
         }
 
