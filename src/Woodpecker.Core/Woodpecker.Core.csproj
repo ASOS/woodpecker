@@ -42,10 +42,6 @@
       <HintPath>..\..\packages\BeeHive.DataStructures.1.0.1\lib\net45\BeeHive.DataStructures.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
       <Private>True</Private>
@@ -104,8 +100,12 @@
     <Compile Include="Persistence\IPeckResultStore.cs" />
     <Compile Include="Persistence\TableStoragePeckResultStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql\AzureSqlDvmExecutionStatsPecker.cs" />
+    <Compile Include="Sql\AzureSqlDvmGeoReplicationPecker.cs" />
     <Compile Include="Sql\AzureSqlDvmPerfPecker.cs" />
     <Compile Include="Sql\AzureSqlDvmResourcePecker.cs" />
+    <Compile Include="Sql\AzureSqlDvmPeckerBase.cs" />
+    <Compile Include="Sql\AzureSqlDvmWaitPecker.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

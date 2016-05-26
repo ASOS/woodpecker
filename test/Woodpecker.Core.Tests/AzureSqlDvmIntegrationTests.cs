@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +68,49 @@ namespace Woodpecker.Core.Tests
             Assert.NotNull(entity.RowKey);
             Assert.StartsWith("25", entity.PartitionKey);
             Assert.EndsWith("999", entity.PartitionKey);
+        }
+
+        [Fact]
+        public void Test_ExecStatsGetCaptured()
+        {
+            var pecker = new AzureSqlDvmExecutionStatsPecker();
+            var entities = pecker.PeckAsync(new PeckSource()
+            {
+                SourceConnectionString = _connectionString
+            }).Result.ToArray();
+
+            Assert.NotEmpty(entities);
+            var first = entities.First();
+            foreach (var entity in entities)
+            {
+                Assert.NotNull(entity.PartitionKey);
+                Assert.NotNull(entity.RowKey);
+                Assert.StartsWith("25", entity.PartitionKey);
+                Assert.EndsWith("999", entity.PartitionKey);
+                Assert.Equal(first.PartitionKey, entity.PartitionKey);
+                Trace.WriteLine(((DynamicTableEntity)entity).Properties["sqldb_stats_plan_handle"].StringValue);
+            }
+        }
+
+        [Fact]
+        public void Test_WaitsGetCaptured()
+        {
+            var pecker = new AzureSqlDvmWaitPecker();
+            var entities = pecker.PeckAsync(new PeckSource()
+            {
+                SourceConnectionString = _connectionString
+            }).Result.ToArray();
+
+            Assert.NotEmpty(entities);
+            var first = entities.First();
+            foreach (var entity in entities)
+            {
+                Assert.NotNull(entity.PartitionKey);
+                Assert.NotNull(entity.RowKey);
+                Assert.StartsWith("25", entity.PartitionKey);
+                Assert.EndsWith("999", entity.PartitionKey);
+                Assert.Equal(first.PartitionKey, entity.PartitionKey);
+            }
         }
     }
 }
