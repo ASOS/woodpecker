@@ -18,10 +18,7 @@ namespace Woodpecker.Core
         ///     Environment
         ///     (Component if source has a one-to-one relationship with)
         /// </summary>
-        public string Name {
-            get { return RowKey; }
-            set { RowKey = value; } 
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Bus connection string (e.g. Azure namespace connection string)

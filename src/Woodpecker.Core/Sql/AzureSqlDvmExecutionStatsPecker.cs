@@ -37,7 +37,7 @@ SELECT
     'query' AS sqldb_stats_type, -- string
     '' AS sqldb_proc_object_name, -- string
     '' AS sqldb_stats_proc_type, -- string
-    COALESCE(qry.query_id,0) AS sqldb_query_query_store_query_id, -- int64
+    COALESCE(qry.query_id,0) AS sqldb_stats_querystore_id, -- int64
     execution_count AS sqldb_stats_total_execution_count, -- string
     FLOOR(total_worker_time / 1000.0) AS sqldb_stats_total_cpu_time_ms, -- int64
     total_elapsed_time AS sqldb_stats_total_elapsed_time_ms, -- int64
