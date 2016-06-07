@@ -10,6 +10,7 @@ using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
 using Woodpecker.Core.Azure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Woodpecker.Core.Tests
 {
@@ -22,8 +23,11 @@ namespace Woodpecker.Core.Tests
     public class ServiceBusIntegrationTests
     {
         private string _connectionString;
-        public ServiceBusIntegrationTests()
+        private ITestOutputHelper _outputHelper;
+
+        public ServiceBusIntegrationTests(ITestOutputHelper outputHelper)
         {
+            _outputHelper = outputHelper;
             _connectionString =
                 Environment.GetEnvironmentVariable("AzureServiceBusConnectionStringForTest", EnvironmentVariableTarget.Machine);
 
@@ -46,7 +50,8 @@ namespace Woodpecker.Core.Tests
                     Name = "he he"
                 });
 
-                Trace.WriteLine(JsonConvert.SerializeObject(result));
+                _outputHelper.WriteLine(JsonConvert.SerializeObject(result));
+                CheckQueueName(result);
             }
         }
 
@@ -62,7 +67,8 @@ namespace Woodpecker.Core.Tests
                     Name = "he he"
                 });
 
-                Trace.WriteLine(JsonConvert.SerializeObject(result));
+                _outputHelper.WriteLine(JsonConvert.SerializeObject(result));
+                CheckQueueName(result);
             }
         }
 
@@ -80,8 +86,19 @@ namespace Woodpecker.Core.Tests
                         Name = "he he"
                     });
 
-                    Trace.WriteLine(JsonConvert.SerializeObject(result));
+                    _outputHelper.WriteLine(JsonConvert.SerializeObject(result));
+                    CheckQueueName(result);
                 }
+            }
+        }
+
+        private static void CheckQueueName(BusPeckResult result)
+        {
+            const string InvalidChars = "/\\\t\r\n?#";
+
+            foreach (var c in InvalidChars)
+            {
+                Assert.DoesNotContain(c.ToString(), result.QueueName);
             }
         }
     }
