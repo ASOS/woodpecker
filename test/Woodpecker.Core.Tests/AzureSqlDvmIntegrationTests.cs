@@ -36,7 +36,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_PerfGetCaptured()
         {
-            var pecker = new AzureSqlDvmPerfPecker();
+            var pecker = new AzureSqlDmvPerfPecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
@@ -58,7 +58,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_ResourceGetCaptured()
         {
-            var pecker = new AzureSqlDvmResourcePecker();
+            var pecker = new AzureSqlDmvResourcePecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
@@ -78,7 +78,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_ExecStatsGetCaptured()
         {
-            var pecker = new AzureSqlDvmExecutionStatsPecker();
+            var pecker = new AzureSqlDmvExecutionStatsPecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
@@ -100,7 +100,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_WaitsGetCaptured()
         {
-            var pecker = new AzureSqlDvmWaitPecker();
+            var pecker = new AzureSqlDmvWaitPecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
