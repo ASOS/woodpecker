@@ -28,7 +28,7 @@ FROM sys.dm_db_wait_stats";
 
         protected override IEnumerable<string> GetRowKeyFieldNames()
         {
-            return new[] { "server_name", "database_name", "sqdb_waits_wait_type" };
+            return new[] { "server_name", "database_name", "sqldb_waits_wait_type" };
         }
 
         protected override string GetUtcTimestampFieldName()
