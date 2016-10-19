@@ -26,7 +26,7 @@ from   sys.database_files df; ";
 
         protected override IEnumerable<string> GetRowKeyFieldNames()
         {
-            return new[] { "server_name", "database_name", "database_id", "file_id", "file_type_desc", "size_kb", "max_size_kb" };
+            return new[] { "server_name", "database_name", "file_id"};
         }
 
         protected override string GetUtcTimestampFieldName()

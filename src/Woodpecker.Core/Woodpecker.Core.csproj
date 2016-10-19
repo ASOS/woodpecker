@@ -105,7 +105,7 @@
     <Compile Include="Sql\AzureSqlDmvPerfPecker.cs" />
     <Compile Include="Sql\AzureSqlDmvResourcePecker.cs" />
     <Compile Include="Sql\AzureSqlDmvPeckerBase.cs" />
-    <Compile Include="Sql\AzureSqlDmvWaitPecker.cs" />
+    <Compile Include="Sql\AzureSqlStorageSizePecker.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
