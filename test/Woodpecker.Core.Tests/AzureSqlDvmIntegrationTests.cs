@@ -100,7 +100,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_WaitsGetCaptured()
         {
-            var pecker = new AzureSqlDmvWaitPecker();
+            var pecker = new AzureSqlStorageSizePecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
