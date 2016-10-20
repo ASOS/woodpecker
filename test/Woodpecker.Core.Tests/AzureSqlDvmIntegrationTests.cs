@@ -58,7 +58,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_ResourceGetCaptured()
         {
-            var pecker = new AzureSqlDmvResourcePecker();
+           var pecker = new AzureSqlDmvProcedureStatsPecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
@@ -67,8 +67,8 @@ namespace Woodpecker.Core.Tests
             Assert.NotEmpty(entities);
             var entity = (DynamicTableEntity) entities.Single();
             var builder = new SqlConnectionStringBuilder(_connectionString);
-            Assert.Contains(entity.Properties["server_name"].StringValue, builder.DataSource);
-            Assert.Equal(builder.InitialCatalog, entity.Properties["database_name"].StringValue);
+            Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
+            Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
             Assert.NotNull(entity.PartitionKey);
             Assert.NotNull(entity.RowKey);
             Assert.StartsWith("25", entity.PartitionKey);
