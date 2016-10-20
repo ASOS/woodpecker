@@ -78,7 +78,7 @@ namespace Woodpecker.Core.Tests
         [Fact]
         public void Test_ExecStatsGetCaptured()
         {
-            var pecker = new AzureSqlDmvExecutionStatsPecker();
+            var pecker = new AzureSqlDmvConnectionsAndDeadlocksPecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
@@ -93,7 +93,7 @@ namespace Woodpecker.Core.Tests
                 Assert.StartsWith("25", entity.PartitionKey);
                 Assert.EndsWith("999", entity.PartitionKey);
                 Assert.Equal(first.PartitionKey, entity.PartitionKey);
-                output.WriteLine(((DynamicTableEntity)entity).Properties["sqldb_stats_plan_handle"].StringValue);
+                //output.WriteLine(((DynamicTableEntity)entity).Properties["sqldb_stats_plan_handle"].StringValue);
             }
         }
 
