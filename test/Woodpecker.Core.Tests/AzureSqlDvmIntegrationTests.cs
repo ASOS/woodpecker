@@ -34,9 +34,9 @@ namespace Woodpecker.Core.Tests
         }
 
         [Fact]
-        public void Test_PerfGetCaptured()
+        public void Test_DtuGetCaptured()
         {
-            var pecker = new AzureSqlDmvPerfPecker();
+            var pecker = new AzureSqlDmvDtuPecker();
             var entities = pecker.PeckAsync(new PeckSource()
             {
                 SourceConnectionString = _connectionString
