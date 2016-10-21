@@ -56,27 +56,47 @@ namespace Woodpecker.Core.Tests
         }
 
         [Fact]
-        public void Test_ResourceGetCaptured()
+        public void Test_ProcedureStatusGetCaptured()
         {
            var pecker = new AzureSqlDmvProcedureStatsPecker();
-            var entities = pecker.PeckAsync(new PeckSource()
-            {
-                SourceConnectionString = _connectionString
-            }).Result.ToArray();
+           var entities = pecker.PeckAsync(new PeckSource()
+           {
+              SourceConnectionString = _connectionString
+           }).Result.ToArray();
 
-            Assert.NotEmpty(entities);
-            var entity = (DynamicTableEntity) entities.Single();
-            var builder = new SqlConnectionStringBuilder(_connectionString);
-            Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
-            Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
-            Assert.NotNull(entity.PartitionKey);
-            Assert.NotNull(entity.RowKey);
-            Assert.StartsWith("25", entity.PartitionKey);
-            Assert.EndsWith("999", entity.PartitionKey);
+           Assert.NotEmpty(entities);
+           var entity = (DynamicTableEntity)entities.Single();
+           var builder = new SqlConnectionStringBuilder(_connectionString);
+           Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
+           Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
+           Assert.NotNull(entity.PartitionKey);
+           Assert.NotNull(entity.RowKey);
+           Assert.StartsWith("25", entity.PartitionKey);
+           Assert.EndsWith("999", entity.PartitionKey);
         }
 
         [Fact]
-        public void Test_ExecStatsGetCaptured()
+        public void Test_QueryStatusGetCaptured()
+        {
+           var pecker = new AzureSqlDmvQueryStatsPecker();
+           var entities = pecker.PeckAsync(new PeckSource()
+           {
+              SourceConnectionString = _connectionString
+           }).Result.ToArray();
+
+           Assert.NotEmpty(entities);
+           var entity = (DynamicTableEntity)entities.Single();
+           var builder = new SqlConnectionStringBuilder(_connectionString);
+           Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
+           Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
+           Assert.NotNull(entity.PartitionKey);
+           Assert.NotNull(entity.RowKey);
+           Assert.StartsWith("25", entity.PartitionKey);
+           Assert.EndsWith("999", entity.PartitionKey);
+        }
+
+        [Fact]
+        public void Test_ConnectionsAndDeadlocksGetCaptured()
         {
             var pecker = new AzureSqlDmvConnectionsAndDeadlocksPecker();
             var entities = pecker.PeckAsync(new PeckSource()
@@ -98,7 +118,7 @@ namespace Woodpecker.Core.Tests
         }
 
         [Fact]
-        public void Test_WaitsGetCaptured()
+        public void Test_StorageSizeGetCaptured()
         {
             var pecker = new AzureSqlStorageSizePecker();
             var entities = pecker.PeckAsync(new PeckSource()
