@@ -16,7 +16,8 @@ select @@servername [collection_server_name]
      , df.type_desc [file_type_desc]  
      , convert(bigint, df.size) *8 [size_kb] 
      , convert(bigint, df.max_size) *8 [max_size_kb] 
-from   sys.database_files df;";
+from   sys.database_files df
+where  type_desc != 'filestream';";
 
         protected override string GetQuery()
         {
