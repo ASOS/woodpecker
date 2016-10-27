@@ -16,7 +16,7 @@ namespace Woodpecker.Core.Sql
 select @@servername [collection_server_name] 
      , db_name() [collection_database_name]  
      , getutcdate() [collection_time_utc] 
-     , [end_time] 
+     , convert(varchar(30), [end_time], 121) [end_time]  
      , [cpu_percent]  
      , [physical_data_read_percent]    
      , [log_write_percent]    
