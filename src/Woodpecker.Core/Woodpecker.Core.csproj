@@ -103,6 +103,7 @@
     <Compile Include="Sql\AzureSqlDmvConnectionsAndDeadlocksPecker.cs" />
     <Compile Include="Sql\AzureSqlDmvGeoReplicationPecker.cs" />
     <Compile Include="Sql\AzureSqlDmvDtuPecker.cs" />
+    <Compile Include="Sql\AzureSqlDmvQueryStoreConfigPecker.cs" />
     <Compile Include="Sql\AzureSqlDmvQueryStatsPecker.cs" />
     <Compile Include="Sql\AzureSqlDmvProcedureStatsPecker.cs" />
     <Compile Include="Sql\AzureSqlDmvPeckerBase.cs" />
