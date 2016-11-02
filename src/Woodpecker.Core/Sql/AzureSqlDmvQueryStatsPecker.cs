@@ -11,12 +11,12 @@ select @@servername [collection_server_name] 
      , db_name() [collection_database_name] 
      , getutcdate() [collection_time_utc] 
      , rs.[runtime_stats_id] 
-     , convert(datetime, rsi.[start_time]) [interval_start_time] 
-     , convert(datetime, rsi.[end_time]) [interval_end_time] 
+     , convert(varchar, convert(datetime, rsi.[start_time]), 121) [interval_start_time] 
+     , convert(varchar, convert(datetime, rsi.[end_time]), 121) [interval_end_time] 
      , qt.[query_sql_text] 
      , q.[query_id] 
      , convert(varchar, q.[query_hash], 1) [query_hash]
-     , convert(datetime, rs.[last_execution_time]) [last_execution_time] 
+     , convert(varchar, convert(datetime, rs.[last_execution_time]), 121) [last_execution_time] 
      , rs.[count_executions] 
      , q.[object_id] 
      , coalesce(quotename(object_schema_name(q.[object_id])) + quotename(object_name(q.[object_id])), '') [object_name] 
@@ -33,7 +33,7 @@ select @@servername [collection_server_name] 
      , rs.[max_rowcount] 
      , rs.[last_rowcount] 
      , p.[count_compiles] 
-     , convert(datetime, p.[last_compile_start_time]) [last_compile_start_time] 
+     , convert(varchar, convert(datetime, p.[last_compile_start_time]), 121) [last_compile_start_time] 
      , floor(q.[last_compile_duration] /1000.) [last_compile_duration_ms] 
 from   sys.query_store_query q 
 join   sys.query_store_query_text qt on qt.[query_text_id] = q.[query_text_id] 
@@ -50,7 +50,7 @@ and    rs.[last_execution_time] > dateadd(mi, -2, getutcdate());";
 
         protected override IEnumerable<string> GetRowKeyFieldNames()
         {
-           return new[] { "collection_server_name", "collection_database_name", "runtime_stats_id" };
+           return new[] { "collection_server_name", "collection_database_name", "runtime_stats_id", "last_execution_time" };
         }
 
         protected override string GetUtcTimestampFieldName()
