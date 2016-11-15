@@ -11,7 +11,7 @@ namespace Woodpecker.Core.Sql
         private const string _query = @"
 select @@servername [collection_server_name]  
      , db_name() [collection_database_name] 
-     , getutcdate() [collection_time_utc] 
+     , el.[end_time] [collection_time_utc] 
      , el.[database_name]        
      , convert(varchar(19), el.[start_time], 121) [start_time] 
      , convert(varchar(19), el.[end_time], 121) [end_time] 

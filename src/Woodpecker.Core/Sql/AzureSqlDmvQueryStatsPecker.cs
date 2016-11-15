@@ -9,7 +9,7 @@ namespace Woodpecker.Core.Sql
         private const string _query = @"
 select @@servername [collection_server_name] 
      , db_name() [collection_database_name] 
-     , getutcdate() [collection_time_utc] 
+     , convert(datetime, rsi.[end_time]) [collection_time_utc] 
      , rs.[runtime_stats_id] 
      , convert(varchar, convert(datetime, rsi.[start_time]), 121) [interval_start_time] 
      , convert(varchar, convert(datetime, rsi.[end_time]), 121) [interval_end_time] 
