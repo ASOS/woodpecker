@@ -41,7 +41,7 @@ join   sys.query_store_plan p on p.[query_id] = q.[query_id]
 join   sys.query_store_runtime_stats rs on rs.[plan_id] = p.[plan_id] 
 join   sys.query_store_runtime_stats_interval rsi on rsi.[runtime_stats_interval_id] = rs.[runtime_stats_interval_id] 
 where  q.[is_internal_query] | q.[is_clouddb_internal_query] = 'false'​
-and    rs.[last_execution_time] > dateadd(mi, -2, getutcdate());"; 
+and    rs.[last_execution_time] > dateadd(ss, -80, getutcdate());"; 
 
         protected override string GetQuery()
         {

@@ -22,7 +22,7 @@ select @@servername [collection_server_name]
      , convert(varchar(1024), ps.[plan_handle], 1) [plan_handle]  
 from   sys.dm_exec_procedure_stats ps 
 where  ps.[type] in ('P', 'PC') 
-and    ps.[last_execution_time] > dateadd(mi, -2, getutcdate());"; 
+and    ps.[last_execution_time] > dateadd(ss, -80, getutcdate());"; 
 
 
         protected override string GetQuery()
