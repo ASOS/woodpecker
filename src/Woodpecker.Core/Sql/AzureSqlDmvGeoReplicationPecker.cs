@@ -28,7 +28,7 @@ from   sys.dm_geo_replication_link_status";
 
         protected override IEnumerable<string> GetRowKeyFieldNames()
         {
-            return new[] {"collection_server_name", "collection_database_name", "partner_server", "partner_database" };
+           return new[] { "collection_server_name", "collection_database_name", "secondary_server_name", "secondary_database_name" };
         }
 
         protected override string GetUtcTimestampFieldName()
