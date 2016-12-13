@@ -35,6 +35,8 @@ select @@servername [collection_server_name] 
      , p.[count_compiles] 
      , convert(varchar, convert(datetime, p.[last_compile_start_time]), 121) [last_compile_start_time] 
      , floor(q.[last_compile_duration] /1000.) [last_compile_duration_ms] 
+     , floor(rs.[last_cpu_time] * rs.[count_executions] /1000.) [weighted_last_cpu_time_ms] 
+     , floor(rs.[last_duration] * rs.[count_executions] /1000.) [weighted_last_duration_ms] 
 from   sys.query_store_query q 
 join   sys.query_store_query_text qt on qt.[query_text_id] = q.[query_text_id] 
 join   sys.query_store_plan p on p.[query_id] = q.[query_id] 

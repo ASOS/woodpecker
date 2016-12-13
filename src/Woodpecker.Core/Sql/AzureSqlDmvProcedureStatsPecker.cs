@@ -20,6 +20,8 @@ select @@servername [collection_server_name]
      , floor(ps.[max_elapsed_time] /1000.) [max_elapsed_time_ms] 
      , floor(ps.[last_elapsed_time] /1000.) [last_elapsed_time_ms] 
      , convert(varchar(1024), ps.[plan_handle], 1) [plan_handle]  
+     , floor(ps.[execution_count] * ps.[last_worker_time] /1000.) [weighted_last_cpu_time_ms]
+     , floor(ps.[execution_count] * ps.[last_elapsed_time] /1000.) [weighted_last_elapsed_time_ms]
 from   sys.dm_exec_procedure_stats ps 
 where  ps.[type] in ('P', 'PC') 
 and    ps.[last_execution_time] > dateadd(ss, -80, getutcdate());"; 
