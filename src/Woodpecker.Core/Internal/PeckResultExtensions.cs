@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
+using Woodpecker.Core.DocumentDb.Model;
 
 namespace Woodpecker.Core.Internal
 {
@@ -26,6 +27,17 @@ namespace Woodpecker.Core.Internal
             entity.Properties.Add("SourceName", EntityProperty.GeneratePropertyForString(result.SourceName));
             entity.Properties.Add("TimeCaptured", EntityProperty.GeneratePropertyForDateTimeOffset(result.TimeCaptured));
             entity.Properties.Add("QueueType", EntityProperty.GeneratePropertyForString(result.QueueType));
+
+            return entity;
+        }
+
+        public static DynamicTableEntity ToEntity(this MetricModel metric, string sourceName, DateTimeOffset timeCaptured)
+        {
+            var minuteOffset = new DateTimeOffset(DateTime.Parse(timeCaptured.UtcDateTime.ToString("yyyy-MM-dd HH:mm:00")), TimeSpan.Zero);
+            var shardKey = (DateTimeOffset.MaxValue.Ticks - minuteOffset.Ticks).ToString("D19");
+
+            var entity = new DynamicTableEntity(shardKey,
+                string.Format("{0}_{1}", sourceName, metric.Name));
 
             return entity;
         }

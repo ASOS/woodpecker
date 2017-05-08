@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Woodpecker.Core.DocumentDb.Infrastructure;
 using Woodpecker.Core.DocumentDb.Model;
 
-namespace Woodpecker.Core.DocumentDb
+namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
     public class MetricsAggregator
     {
