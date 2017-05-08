@@ -10,7 +10,7 @@ namespace Woodpecker.Core.DocumentDb
 {
     public class MetricsAggregator
     {
-        public MetricModel Aggregate(string name, MetricValue[] values)
+        public virtual MetricModel Aggregate(string name, MetricValue[] values)
         {
             if (!values.Any())
             {

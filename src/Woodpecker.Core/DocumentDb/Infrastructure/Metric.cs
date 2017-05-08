@@ -10,7 +10,7 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
     public class Metric
     {
         public LocalizedString Name { get; set; }
-        public IEnumerable<MetricValue> MetricValues { get; set; }
+        public MetricValue[] MetricValues { get; set; }
     }
 
     public class MetricValue

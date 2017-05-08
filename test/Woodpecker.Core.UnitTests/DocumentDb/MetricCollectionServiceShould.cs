@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FakeItEasy;
 using FluentAssertions;
+using Woodpecker.Core.DocumentDb;
 using Woodpecker.Core.DocumentDb.Infrastructure;
 using Woodpecker.Core.DocumentDb.Model;
 using Xunit;
@@ -9,16 +13,63 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
 {
     public class MetricCollectionServiceShould
     {
-        private readonly IMetricsInfo fakeMetricCollectionInfo;
+        private static readonly DateTime StartUtc = DateTime.Now;
+        private static readonly DateTime EndUtc = DateTime.Now.AddHours(1);
+
         private readonly IMonitoringResourceService fakeMonitoringResource;
+        private readonly MetricsAggregator fakeMetricsAggregator;
         private readonly IMetricCollectionService sut;
 
+        private readonly IMetricsInfo fakeMetricsInfo;
 
         public MetricCollectionServiceShould()
         {
             this.fakeMonitoringResource = A.Fake<IMonitoringResourceService>();
-            this.fakeMetricCollectionInfo = A.Fake<IMetricsInfo>();
-            this.sut = new MetricCollectionService(this.fakeMonitoringResource);
+            this.fakeMetricsAggregator = A.Fake<MetricsAggregator>();
+            this.fakeMetricsInfo = A.Fake<IMetricsInfo>();
+            this.sut = new MetricCollectionService(this.fakeMonitoringResource, this.fakeMetricsAggregator);
+        }
+
+        [Fact]
+        public async Task Return_Aggregated_Metrics_From_MonitoringResourceService()
+        {
+            // Arrange
+            var response = CreateResponse(nMetrics: 2, nValues: 2);
+            A.CallTo(() => this.fakeMonitoringResource.FetchMetrics(StartUtc, EndUtc, this.fakeMetricsInfo)).Returns(response);
+
+            var expectedMetrics = SetupFakeMetricsAggregator(response);
+
+            // Act
+            var actualMetrics = await this.sut.CollectMetrics(StartUtc, EndUtc, this.fakeMetricsInfo);
+
+            // Assert
+            Assert.Equal(expectedMetrics, actualMetrics);
+        }
+
+        [Fact]
+        public async Task Not_Aggregate_Metrics_That_Dont_Have_Values()
+        {
+            var response = CreateResponse(nMetrics: 1, nValues: 0);
+            A.CallTo(() => this.fakeMonitoringResource.FetchMetrics(StartUtc, EndUtc, this.fakeMetricsInfo)).Returns(response);
+
+            // Act
+            await this.sut.CollectMetrics(StartUtc, EndUtc, fakeMetricsInfo);
+
+            // assert
+            A.CallTo(() => this.fakeMetricsAggregator.Aggregate(A<string>.Ignored, A<MetricValue[]>.Ignored)).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public async Task Return_EmptyEnumerable_When_No_Metrics_Have_Values()
+        {
+            var response = CreateResponse(nMetrics: 1, nValues: 0);
+            A.CallTo(() => this.fakeMonitoringResource.FetchMetrics(StartUtc, EndUtc, this.fakeMetricsInfo)).Returns(response);
+
+            // Act
+            var actualMetrics = await this.sut.CollectMetrics(StartUtc, EndUtc, fakeMetricsInfo);
+
+            // assert
+            Assert.Equal(0, actualMetrics.Count());
         }
 
         [Fact]
@@ -42,6 +93,39 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             //// Assert
             //A.CallTo(() => this.fakeMonitoringResource.GetMetrics(expectedResourceUri, expectedFilter)).MustHaveHappened(Repeated.Exactly.Once);
             //actual.ShouldBeEquivalentTo(expectedMetricResponse);
+        }
+
+        private MetricsResponse CreateResponse(int nMetrics, int nValues)
+        {
+            return new MetricsResponse
+            {
+                Metrics = Enumerable.Range(1, nMetrics)
+                    .Select(i => new Metric
+                    {
+                        Name = new LocalizedString
+                        {
+                            Value = string.Format("Metric {0}", i)
+                        },
+                        MetricValues = Enumerable.Range(1, nValues)
+                                                 .Select(j => new MetricValue()).ToArray()
+                    }).ToArray()
+            };
+        }
+
+        private IEnumerable<MetricModel> SetupFakeMetricsAggregator(MetricsResponse response)
+        {
+            var models = new List<MetricModel>();
+
+            foreach (var metric in response.Metrics)
+            {
+                var model = new MetricModel();
+                A.CallTo(() => this.fakeMetricsAggregator.Aggregate(metric.Name.Value, metric.MetricValues))
+                    .Returns(model);
+
+                models.Add(model);
+            }
+
+            return models;
         }
     }
 }
