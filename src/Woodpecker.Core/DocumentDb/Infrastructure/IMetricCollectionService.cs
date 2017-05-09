@@ -7,6 +7,6 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
     public interface IMetricCollectionService
     {
-        Task<IEnumerable<MetricModel>> CollectMetrics(DateTime startTimeUtc, DateTime endTimeUtc, IMetricsInfo metricsInfo);
+        Task<IEnumerable<MetricModel>> CollectMetrics(IMetricsRequest metricsRequest);
     }
 }

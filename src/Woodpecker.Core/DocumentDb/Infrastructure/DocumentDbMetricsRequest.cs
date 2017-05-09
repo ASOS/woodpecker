@@ -2,13 +2,13 @@ using System;
 
 namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
-    public class DocumentDbMetricsInfo : IMetricsInfo
+    public class DocumentDbMetricsRequest : IMetricsRequest
     {
-        private readonly string resourceId;
-
-        public DocumentDbMetricsInfo(string resourceId)
+        public DocumentDbMetricsRequest(string resourceId,DateTime startTimeUtc, DateTime endTimeUtc)
         {
-            this.resourceId = resourceId;
+            StartTimeUtc = startTimeUtc;
+            EndTimeUtc = endTimeUtc;
+            ResourceId = resourceId;
         }
 
         public string[] MetricsToGather
@@ -31,6 +31,8 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
                         "Total Requests",
                     };}
         }
-        public string ResourceId { get { return this.resourceId; } }
+        public string ResourceId { get; }
+        public DateTime StartTimeUtc { get; }
+        public DateTime EndTimeUtc { get; }
     }
 }

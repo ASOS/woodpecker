@@ -5,8 +5,8 @@ using Woodpecker.Core.DocumentDb.Model;
 
 namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
-    public interface IMonitoringResourceClient
+    public interface IMonitoringApiClient
     {
-        Task<MetricsResponse> GetResponse(Uri uri);
+        Task<MetricsResponse> FetchMetrics(IMetricsRequest metricsRequest);
     }
 }

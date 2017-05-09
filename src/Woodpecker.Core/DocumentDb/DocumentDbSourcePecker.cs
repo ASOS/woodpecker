@@ -1,44 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Woodpecker.Core.DocumentDb.Configuration;
 using Woodpecker.Core.DocumentDb.Infrastructure;
+using Woodpecker.Core.DocumentDb.Model;
+using Woodpecker.Core.Factory;
 using Woodpecker.Core.Internal;
 
 namespace Woodpecker.Core.DocumentDb
 {
     public class DocumentDbSourcePecker : ISourcePecker
     {
-        private readonly IMetricCollectionService metricCollectionService;
-        private readonly ConfigurationMapper configMapper;
-
+        private readonly IMetricCollectionServiceFactory metricCollectionServiceFactory;
         public DocumentDbSourcePecker()
-            : this(null)
-
+            : this(new MetricCollectionServiceFactory())
         {
-
         }
 
-        public DocumentDbSourcePecker(IMetricCollectionService metricCollectionService)
+        public DocumentDbSourcePecker(IMetricCollectionServiceFactory metricCollectionServiceFactory)
         {
-            this.metricCollectionService = metricCollectionService;
-            this.configMapper = new ConfigurationMapper();
+            this.metricCollectionServiceFactory = metricCollectionServiceFactory;
         }
 
         public async Task<IEnumerable<ITableEntity>> PeckAsync(PeckSource source)
         {
-            var config = this.configMapper.Map(source.SourceConnectionString);
-
-            var metricsInfo = new DocumentDbMetricsInfo(config.ResourceId);
+            var config = new ConfigurationMapper().Map(source.SourceConnectionString);
 
             var startTimeUtc = source.LastOffset.DateTime;
+            
+            var metrics = await CreateMetricCollectionService(config).CollectMetrics(
+                                    new DocumentDbMetricsRequest(config.ResourceId, startTimeUtc, startTimeUtc.AddMinutes(source.IntervalMinutes)));
 
-            var metrics = await this.metricCollectionService.CollectMetrics(startTimeUtc, startTimeUtc.AddMinutes(source.IntervalMinutes), metricsInfo);
 
-            return metrics.Select(m => m.ToEntity(source.Name, startTimeUtc));
+            var timeCapturedUtc = DateTimeOffset.UtcNow;
+
+            return metrics.Select(m => m.ToEntity(source.Name, timeCapturedUtc));
+        }
+
+        private IMetricCollectionService CreateMetricCollectionService(IConfiguration configuration)
+        {
+            return this.metricCollectionServiceFactory.Create(configuration.TenantId,configuration.ClientId,configuration.ClientSecret);
         }
     }
 }

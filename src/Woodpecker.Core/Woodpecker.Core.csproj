@@ -54,6 +54,14 @@
       <HintPath>..\..\packages\Microsoft.Data.Services.Client.5.2.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.13.9.1126, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.9\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform, Version=3.13.9.1126, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.9\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WindowsAzure.ServiceBus.2.1.0.0\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -108,24 +116,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\PeckSourceProcessor.cs" />
-    <Compile Include="DocumentDb\Infrastructure\DocumentDbMetricsInfo.cs" />
+    <Compile Include="DocumentDb\DocumentDbSourcePecker.cs" />
+    <Compile Include="DocumentDb\Infrastructure\UriFactory.cs" />
+    <Compile Include="Factory\IMetricCollectionServiceFactory.cs" />
+    <Compile Include="DocumentDb\Infrastructure\DocumentDbMetricsRequest.cs" />
     <Compile Include="DocumentDb\Configuration\Configuration.cs" />
     <Compile Include="DocumentDb\Configuration\ConfigurationMapper.cs" />
     <Compile Include="DocumentDb\Configuration\IConfiguration.cs" />
-    <Compile Include="DocumentDb\IDocumentDbMetricsCollector.cs" />
     <Compile Include="DocumentDb\Infrastructure\IHttpClient.cs" />
     <Compile Include="DocumentDb\Infrastructure\IMetricCollectionService.cs" />
-    <Compile Include="DocumentDb\Infrastructure\IMetricsInfo.cs" />
-    <Compile Include="DocumentDb\Infrastructure\IMonitoringResourceClient.cs" />
-    <Compile Include="DocumentDb\Infrastructure\IMonitoringResourceService.cs" />
+    <Compile Include="DocumentDb\Infrastructure\IMetricsRequest.cs" />
+    <Compile Include="DocumentDb\Infrastructure\IMonitoringApiClient.cs" />
     <Compile Include="DocumentDb\Infrastructure\ISecurityTokenProvider.cs" />
     <Compile Include="DocumentDb\Infrastructure\Metric.cs" />
     <Compile Include="DocumentDb\Infrastructure\MetricCollectionService.cs" />
+    <Compile Include="DocumentDb\Infrastructure\MetricsAggregator.cs" />
     <Compile Include="DocumentDb\Infrastructure\MetricsResponse.cs" />
-    <Compile Include="DocumentDb\Infrastructure\MonitoringResourceClient.cs" />
-    <Compile Include="DocumentDb\MetricsAggregator.cs" />
-    <Compile Include="DocumentDb\Model\Metric.cs" />
     <Compile Include="DocumentDb\Infrastructure\MonitoringApiClient.cs" />
+    <Compile Include="DocumentDb\Infrastructure\SecurityTokenProvider.cs" />
+    <Compile Include="Factory\MetricCollectionServiceFactory.cs" />
+    <Compile Include="DocumentDb\Model\Metric.cs" />
     <Compile Include="PeckSource.cs" />
     <Compile Include="Azure\QueueDescriptionsExtensions.cs" />
     <Compile Include="Azure\AzureBusSourcePecker.cs" />

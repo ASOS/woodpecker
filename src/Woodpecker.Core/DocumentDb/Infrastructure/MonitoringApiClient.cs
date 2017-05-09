@@ -1,47 +1,42 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Woodpecker.Core.DocumentDb.Model;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
-    public class MonitoringApiClient : IMonitoringResourceService
+    public class MonitoringApiClient : IMonitoringApiClient
     {
-        private static readonly Uri MonitoringApiBaseUri = new Uri("https://management.azure.com");
-        private readonly IMonitoringResourceClient monitoringResourceClient;
+        private readonly IHttpClient httpClient;
+        private readonly ISecurityTokenProvider securityTokenProvider;
 
-        public MonitoringApiClient(
-            IMonitoringResourceClient monitoringResourceClient)
+        public MonitoringApiClient(ISecurityTokenProvider securityTokenProvider, IHttpClient httpClient)
         {
-            this.monitoringResourceClient = monitoringResourceClient;
+            this.securityTokenProvider = securityTokenProvider;
+            this.httpClient = httpClient;
         }
-        public async Task<MetricsResponse> FetchMetrics(DateTime startTimeUtc, DateTime endTimeUtc, IMetricsInfo metricsInfo)
+
+        public async Task<MetricsResponse> FetchMetrics(IMetricsRequest metricsRequest)
         {
-            var filter = BuildFilter(startTimeUtc, endTimeUtc, metricsInfo);
+            var token = await this.securityTokenProvider.GetSecurityTokenAsync(metricsRequest.ResourceId).ConfigureAwait(false);
 
-            var uri = BuildUri(metricsInfo.ResourceId, filter);
+            var request = new HttpRequestMessage(HttpMethod.Get, UriFactory.CreateMonitoringUriWithMetricFilter(metricsRequest));
 
-            return await this.monitoringResourceClient.GetResponse(uri);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
+
+            return await Deserialise(response);
         }
-        private Uri BuildUri(string resource, string filter)
+
+        private static async Task<MetricsResponse> Deserialise(HttpResponseMessage response)
         {
-            var uri = String.Format("{0}/metrics?api-version=2014-04-01&$filter={1}", resource, filter);
+            var contentAsstring = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            return new Uri(MonitoringApiBaseUri, uri);
-        }
-        private string BuildFilter(DateTime startUtc, DateTime endUtc, IMetricsInfo metricsInfo)
-        {
-            var start = startUtc.ToString("yyyy-MM-ddTHH:mm:00.000Z");
-            var end = endUtc.ToString("yyyy-MM-ddTHH:mm:00.000Z");
-
-            var metricsSelector = metricsInfo.MetricsToGather.Select(m => $"name.value eq '{m}'");
-            var metricsFilter = $"{string.Join(" or ", metricsSelector)}";
-
-            var filter = $"({metricsFilter}) and endTime eq {end} and startTime eq {start} and timeGrain eq duration'PT1M'";
-
-            return filter;
+            return JsonConvert.DeserializeObject<MetricsResponse>(contentAsstring);
         }
     }
 }
