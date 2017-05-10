@@ -39,6 +39,7 @@ namespace Woodpecker.Core.Internal
             var entity = new DynamicTableEntity(shardKey,
                 string.Format("{0}_{1}", sourceName, metric.Name));
 
+            entity.Properties.Add("Name", EntityProperty.GeneratePropertyForString(metric.Name));
             entity.Properties.Add("TimeStamp", EntityProperty.GeneratePropertyForDateTimeOffset(metric.TimeStamp));
             entity.Properties.Add("Average", EntityProperty.GeneratePropertyForDouble(metric.Average));
             entity.Properties.Add("Count", EntityProperty.GeneratePropertyForLong(metric.Count));

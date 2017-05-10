@@ -16,6 +16,7 @@ namespace Woodpecker.Core.DocumentDb
     public class DocumentDbSourcePecker : ISourcePecker
     {
         private readonly IMetricCollectionServiceFactory metricCollectionServiceFactory;
+
         public DocumentDbSourcePecker()
             : this(new MetricCollectionServiceFactory())
         {
@@ -31,8 +32,9 @@ namespace Woodpecker.Core.DocumentDb
             var config = new ConfigurationMapper().Map(source.SourceConnectionString);
 
             var startTimeUtc = source.LastOffset.DateTime;
-            
-            var metrics = await CreateMetricCollectionService(config).CollectMetrics(
+
+            var metricCollectionService = CreateMetricCollectionService(config);
+            var metrics = await metricCollectionService.CollectMetrics(
                                     new DocumentDbMetricsRequest(config.ResourceId, startTimeUtc, startTimeUtc.AddMinutes(source.IntervalMinutes)));
 
 
@@ -43,7 +45,7 @@ namespace Woodpecker.Core.DocumentDb
 
         private IMetricCollectionService CreateMetricCollectionService(IConfiguration configuration)
         {
-            return this.metricCollectionServiceFactory.Create(configuration.TenantId,configuration.ClientId,configuration.ClientSecret);
+            return this.metricCollectionServiceFactory.Create(configuration.TenantId, configuration.ClientId, configuration.ClientSecret);
         }
     }
 }

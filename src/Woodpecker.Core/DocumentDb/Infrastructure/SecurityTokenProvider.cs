@@ -9,9 +9,8 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
     {
         private readonly AuthenticationContext authenticationContext;
         private readonly ClientCredential clientCredential;
-        private readonly string resourceId;
 
-        public SecurityTokenProvider(string tenantId,string clientId,string clientSecret)
+        public SecurityTokenProvider(string tenantId, string clientId, string clientSecret)
         {
             this.authenticationContext = new AuthenticationContext(tenantId);
             this.clientCredential = new ClientCredential(clientId, clientSecret);

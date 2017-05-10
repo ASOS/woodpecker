@@ -29,7 +29,7 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
 
             var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
-            return await Deserialise(response);
+            return await Deserialise(response).ConfigureAwait(false);
         }
 
         private static async Task<MetricsResponse> Deserialise(HttpResponseMessage response)
