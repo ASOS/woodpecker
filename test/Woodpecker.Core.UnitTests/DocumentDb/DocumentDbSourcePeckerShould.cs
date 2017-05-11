@@ -40,7 +40,38 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var startUtc = DateTime.Now;
             var intervalInMinutes = 30;
             var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc);
-            var expectedMetrics = GetMetricModels();
+
+            var expectedMetrics = SetupExpectedMetrics();
+
+            // Act
+            var actualEntities = await this.sut.PeckAsync(peckSource);
+
+            // Assert
+            AssertEntitiesMatchExpectedMetrics(actualEntities.ToArray(), expectedMetrics.ToArray());
+        }
+
+        [Fact]
+        public async void Return_All_Entities_With_Same_PartitionKey()
+        {
+            // Arrange
+            var startUtc = DateTime.Now;
+            var intervalInMinutes = 30;
+            var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc);
+
+            SetupExpectedMetrics();
+
+            // Act
+            var entities = await this.sut.PeckAsync(peckSource);
+
+            // Assert
+            AssertEntitiesHaveSamePartitionKey(entities);
+        }
+
+        public IEnumerable<MetricModel> SetupExpectedMetrics(int n = 10)
+        {
+            var startUtc = DateTime.Now;
+            var intervalInMinutes = 30;
+            var expectedMetrics = GetMetricModels(n);
 
             var expectedMetricsRequest = new DocumentDbMetricsRequest(ResourceId, startUtc, startUtc.AddMinutes(intervalInMinutes));
 
@@ -48,11 +79,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
                 () => this.fakemetricCollectionService.CollectMetrics(A<IMetricsRequest>.That.Matches(m => IsEqualMetricsRequest(expectedMetricsRequest, (DocumentDbMetricsRequest)m))))
                 .Returns(expectedMetrics);
 
-            // Act
-            var actualEntities = await this.sut.PeckAsync(peckSource).ConfigureAwait(false);
-
-            // Assert
-            AssertEntitiesMatchExpectedMetrics(actualEntities.ToArray(), expectedMetrics.ToArray());
+            return expectedMetrics;
         }
 
         private void AssertEntitiesMatchExpectedMetrics(ITableEntity[] actualEntities, MetricModel[] expectedMetrics)
@@ -86,6 +113,19 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
 
         }
 
+        private void AssertEntitiesHaveSamePartitionKey(IEnumerable<ITableEntity> entities)
+        {
+            Assert.NotEmpty(entities);
+
+            var first = entities.First();
+            Assert.NotNull(first.PartitionKey);
+
+            foreach (var entity in entities)
+            {
+                Assert.Equal(first.PartitionKey, entity.PartitionKey);
+            }
+        }
+
         private bool IsEqualMetricsRequest(DocumentDbMetricsRequest expected, DocumentDbMetricsRequest actual)
         {
             try
@@ -99,21 +139,21 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             }
         }
 
-        private static IEnumerable<MetricModel> GetMetricModels()
+        private static IEnumerable<MetricModel> GetMetricModels(int n)
         {
-            return new List<MetricModel>()
-            {
-                new MetricModel()
-                {
-                    Name = "Total Requests",
-                    Total = 4,
-                    TimeStamp = DateTime.UtcNow,
-                    Minimum = 1,
-                    Count = 3,
-                    Average = 2,
-                    Maximum = 5
-                }
-            };
+            var metrics = Enumerable.Range(0, n)
+                                    .Select(i => new MetricModel
+                                    {
+                                        Name = string.Format("Metric {0}", i),
+                                        Total = 4,
+                                        TimeStamp = DateTime.UtcNow,
+                                        Minimum = 1,
+                                        Count = 3,
+                                        Average = 2,
+                                        Maximum = 5
+                                    }).ToList();
+
+            return metrics;
         }
 
         private static PeckSource GetPeckSource(string connectionString, int intervalInMinutes, string name, DateTimeOffset dateTimeOffset)

@@ -21,7 +21,7 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
 
         public async Task<MetricsResponse> FetchMetrics(IMetricsRequest metricsRequest)
         {
-            var token = await this.securityTokenProvider.GetSecurityTokenAsync(metricsRequest.ResourceId).ConfigureAwait(false);
+            var token = await this.securityTokenProvider.GetSecurityTokenAsync().ConfigureAwait(false);
 
             var request = new HttpRequestMessage(HttpMethod.Get, UriFactory.CreateMonitoringUriWithMetricFilter(metricsRequest));
 

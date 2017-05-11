@@ -11,7 +11,7 @@ namespace Woodpecker.Core.Factory
 
         private static IMonitoringApiClient CreateMonitoringApiClient(string tenantId, string clientId, string clientSecrect)
         {
-            return new MonitoringApiClient(new SecurityTokenProvider(tenantId, clientId, clientSecrect), new DocumentDb.Infrastructure.HttpClient());
+            return new MonitoringApiClient(new MonitoringSecurityProvider(tenantId, clientId, clientSecrect), new DocumentDb.Infrastructure.HttpClient());
         }
     }
 }

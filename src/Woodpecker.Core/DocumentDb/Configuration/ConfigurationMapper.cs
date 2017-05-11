@@ -10,7 +10,7 @@ namespace Woodpecker.Core.DocumentDb.Configuration
         private char pairSeparator = ';';
         private char itemSeparator = '=';
 
-        public IConfiguration Map (string connectionString)
+        public IConfiguration Map(string connectionString)
         {
             var resultDictinary = connectionString.Split(pairSeparator).Select(ValidatePairSeparator).ToDictionary(result => result[0], result => result[1]);
 
@@ -19,9 +19,13 @@ namespace Woodpecker.Core.DocumentDb.Configuration
                 throw new ArgumentException(string.Format("The argument count must be 4 in the connection string: '{0}'.", connectionString));
             }
 
-            return new Configuration() { ResourceId = ValidateItemName("ResourceId", resultDictinary), 
-                                         ClientSecret = ValidateItemName("ClientSecret", resultDictinary), ClientId = ValidateItemName("ClientId", resultDictinary), 
-                                         TenantId = ValidateItemName("TenantId", resultDictinary) };
+            return new Configuration()
+            {
+                ResourceId = ValidateItemName("ResourceId", resultDictinary),
+                ClientSecret = ValidateItemName("ClientSecret", resultDictinary),
+                ClientId = ValidateItemName("ClientId", resultDictinary),
+                TenantId = ValidateItemName("TenantId", resultDictinary)
+            };
         }
 
         private string ValidateItemName(string itemName, Dictionary<string, string> dictionary)
@@ -48,8 +52,8 @@ namespace Woodpecker.Core.DocumentDb.Configuration
                 throw new ArgumentException(string.Format("The name value pair '{0}' must be separated by '{1}' in the connection string.", itemPairString, itemSeparator));
             }
 
-            return new []{ match.Groups[1].Value, match.Groups[2].Value };
+            return new[] { match.Groups[1].Value, match.Groups[2].Value };
         }
-     }
+    }
 }
 

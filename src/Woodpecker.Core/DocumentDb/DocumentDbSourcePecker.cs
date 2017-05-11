@@ -40,7 +40,7 @@ namespace Woodpecker.Core.DocumentDb
 
             var timeCapturedUtc = DateTimeOffset.UtcNow;
 
-            return metrics.Select(m => m.ToEntity(source.Name, timeCapturedUtc));
+            return metrics.Select(m => m.ToEntity(source.Name, timeCapturedUtc)).ToArray();
         }
 
         private IMetricCollectionService CreateMetricCollectionService(IConfiguration configuration)

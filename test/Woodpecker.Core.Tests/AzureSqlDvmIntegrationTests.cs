@@ -15,7 +15,7 @@ namespace Woodpecker.Core.Tests
     public class AzureSqlDvmIntegrationTests
     {
         private string _connectionString;
-        
+
         private readonly ITestOutputHelper output;
 
         public AzureSqlDvmIntegrationTests(ITestOutputHelper output)
@@ -26,7 +26,7 @@ namespace Woodpecker.Core.Tests
             if (string.IsNullOrEmpty(_connectionString))
                 _connectionString = Environment.GetEnvironmentVariable("AzureSqlDvmConnectionStringForTest", EnvironmentVariableTarget.User);
 
-            if(string.IsNullOrEmpty(_connectionString))
+            if (string.IsNullOrEmpty(_connectionString))
                 throw new InvalidProgramException("Please set env var for the test");
 
             this.output = output;
@@ -52,47 +52,46 @@ namespace Woodpecker.Core.Tests
                 Assert.EndsWith("999", entity.PartitionKey);
                 Assert.Equal(first.PartitionKey, entity.PartitionKey);
             }
-
         }
 
         [Fact]
         public void Test_ProcedureStatusGetCaptured()
         {
-           var pecker = new AzureSqlDmvProcedureStatsPecker();
-           var entities = pecker.PeckAsync(new PeckSource()
-           {
-              SourceConnectionString = _connectionString
-           }).Result.ToArray();
+            var pecker = new AzureSqlDmvProcedureStatsPecker();
+            var entities = pecker.PeckAsync(new PeckSource()
+            {
+                SourceConnectionString = _connectionString
+            }).Result.ToArray();
 
-           Assert.NotEmpty(entities);
-           var entity = (DynamicTableEntity)entities.Single();
-           var builder = new SqlConnectionStringBuilder(_connectionString);
-           Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
-           Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
-           Assert.NotNull(entity.PartitionKey);
-           Assert.NotNull(entity.RowKey);
-           Assert.StartsWith("25", entity.PartitionKey);
-           Assert.EndsWith("999", entity.PartitionKey);
+            Assert.NotEmpty(entities);
+            var entity = (DynamicTableEntity)entities.Single();
+            var builder = new SqlConnectionStringBuilder(_connectionString);
+            Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
+            Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
+            Assert.NotNull(entity.PartitionKey);
+            Assert.NotNull(entity.RowKey);
+            Assert.StartsWith("25", entity.PartitionKey);
+            Assert.EndsWith("999", entity.PartitionKey);
         }
 
         [Fact]
         public void Test_QueryStatusGetCaptured()
         {
-           var pecker = new AzureSqlDmvQueryStatsPecker();
-           var entities = pecker.PeckAsync(new PeckSource()
-           {
-              SourceConnectionString = _connectionString
-           }).Result.ToArray();
+            var pecker = new AzureSqlDmvQueryStatsPecker();
+            var entities = pecker.PeckAsync(new PeckSource()
+            {
+                SourceConnectionString = _connectionString
+            }).Result.ToArray();
 
-           Assert.NotEmpty(entities);
-           var entity = (DynamicTableEntity)entities.Single();
-           var builder = new SqlConnectionStringBuilder(_connectionString);
-           Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
-           Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
-           Assert.NotNull(entity.PartitionKey);
-           Assert.NotNull(entity.RowKey);
-           Assert.StartsWith("25", entity.PartitionKey);
-           Assert.EndsWith("999", entity.PartitionKey);
+            Assert.NotEmpty(entities);
+            var entity = (DynamicTableEntity)entities.Single();
+            var builder = new SqlConnectionStringBuilder(_connectionString);
+            Assert.Contains(entity.Properties["collection_server_name"].StringValue, builder.DataSource);
+            Assert.Equal(builder.InitialCatalog, entity.Properties["collection_database_name"].StringValue);
+            Assert.NotNull(entity.PartitionKey);
+            Assert.NotNull(entity.RowKey);
+            Assert.StartsWith("25", entity.PartitionKey);
+            Assert.EndsWith("999", entity.PartitionKey);
         }
 
         [Fact]

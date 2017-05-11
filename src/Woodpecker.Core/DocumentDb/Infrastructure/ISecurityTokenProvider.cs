@@ -4,6 +4,6 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
     public interface ISecurityTokenProvider
     {
-        Task<string> GetSecurityTokenAsync(string resourceId);
+        Task<string> GetSecurityTokenAsync();
     }
 }

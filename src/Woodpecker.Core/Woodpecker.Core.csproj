@@ -133,7 +133,7 @@
     <Compile Include="DocumentDb\Infrastructure\MetricsAggregator.cs" />
     <Compile Include="DocumentDb\Infrastructure\MetricsResponse.cs" />
     <Compile Include="DocumentDb\Infrastructure\MonitoringApiClient.cs" />
-    <Compile Include="DocumentDb\Infrastructure\SecurityTokenProvider.cs" />
+    <Compile Include="DocumentDb\Infrastructure\MonitoringSecurityProvider.cs" />
     <Compile Include="Factory\MetricCollectionServiceFactory.cs" />
     <Compile Include="DocumentDb\Model\Metric.cs" />
     <Compile Include="PeckSource.cs" />

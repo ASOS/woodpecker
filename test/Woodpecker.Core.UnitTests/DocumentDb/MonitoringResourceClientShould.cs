@@ -26,25 +26,25 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             this.fakeHttpClient = A.Fake<IHttpClient>();
             this.fakeSecurityTokenProvider = A.Fake<ISecurityTokenProvider>();
             this.fakeMetricRequest = BuildMetricRequest();
-            SetupFakeHttpResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) {Content = GetTestContent(new MetricsResponse() { Metrics = GetMetricValues()}) });
+            SetupFakeHttpResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) { Content = GetTestContent(new MetricsResponse() { Metrics = GetMetricValues() }) });
 
-            this.sut = new MonitoringApiClient(this.fakeSecurityTokenProvider,this.fakeHttpClient);
+            this.sut = new MonitoringApiClient(this.fakeSecurityTokenProvider, this.fakeHttpClient);
         }
 
         private IMetricsRequest BuildMetricRequest()
         {
             var fake = A.Fake<IMetricsRequest>();
-            A.CallTo(() => fake.MetricsToGather).Returns(new string[] {"Metric1"});
+            A.CallTo(() => fake.MetricsToGather).Returns(new string[] { "Metric1" });
             A.CallTo(() => fake.ResourceId).Returns("ResourceId");
-            A.CallTo(() => fake.StartTimeUtc).Returns(new DateTime(2016,10,5));
-            A.CallTo(() => fake.EndTimeUtc).Returns(new DateTime(2016,11,5));
+            A.CallTo(() => fake.StartTimeUtc).Returns(new DateTime(2016, 10, 5));
+            A.CallTo(() => fake.EndTimeUtc).Returns(new DateTime(2016, 11, 5));
             return fake;
         }
 
         private HttpContent GetTestContent(MetricsResponse metricsResponse)
         {
             var a = JsonConvert.SerializeObject(metricsResponse);
-            return new StringContent(a,Encoding.UTF8, "application/json");
+            return new StringContent(a, Encoding.UTF8, "application/json");
         }
 
         private Metric[] GetMetricValues()
@@ -64,7 +64,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         public async Task Collaborate_With_The_Security_Token_Provider_Successfully()
         {
             //Arrange
-            A.CallTo(() => this.fakeSecurityTokenProvider.GetSecurityTokenAsync(A<string>._)).Returns("1234accessToken");
+            A.CallTo(() => this.fakeSecurityTokenProvider.GetSecurityTokenAsync()).Returns("1234accessToken");
 
 
             // Act
@@ -73,7 +73,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
 
             // Assert
             A.CallTo(() => this.fakeHttpClient.SendAsync(A<HttpRequestMessage>.That.Matches(x => ShouldMatchAccessToken(x, "Bearer 1234accessToken")))).MustHaveHappened(Repeated.Exactly.Once);
-            A.CallTo(() => this.fakeSecurityTokenProvider.GetSecurityTokenAsync(this.fakeMetricRequest.ResourceId)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => this.fakeSecurityTokenProvider.GetSecurityTokenAsync()).MustHaveHappened(Repeated.Exactly.Once);
         }
 
 
@@ -82,12 +82,12 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         {
             // Arrange
             var expectedHttpRequest = new HttpRequestMessage(HttpMethod.Get, this.testUri);
-            var expectedResponse = new MetricsResponse() {Metrics = new Metric[] {new Metric() {MetricValues = new MetricValue[] {new MetricValue() {Average = 1,Count = 1,Maximum = 1,Minimum = 1,TimeStamp = DateTime.MaxValue,Total = 1} }} }};
-            SetupFakeHttpResponseMessage(new HttpResponseMessage() { Content = GetTestContent(expectedResponse)});
+            var expectedResponse = new MetricsResponse() { Metrics = new Metric[] { new Metric() { MetricValues = new MetricValue[] { new MetricValue() { Average = 1, Count = 1, Maximum = 1, Minimum = 1, TimeStamp = DateTime.MaxValue, Total = 1 } } } } };
+            SetupFakeHttpResponseMessage(new HttpResponseMessage() { Content = GetTestContent(expectedResponse) });
 
-            
+
             // Act
-           var actual =  await this.sut.FetchMetrics(this.fakeMetricRequest).ConfigureAwait(false);
+            var actual = await this.sut.FetchMetrics(this.fakeMetricRequest).ConfigureAwait(false);
 
 
             // Assert
