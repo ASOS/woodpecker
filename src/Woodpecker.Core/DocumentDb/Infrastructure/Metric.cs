@@ -11,6 +11,19 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
     {
         public LocalizedString Name { get; set; }
         public MetricValue[] MetricValues { get; set; }
+
+        [JsonIgnore]
+        public bool IsCumulative
+        {
+            get
+            {
+                return MetricValues.All(v => v.Average.HasValue &&
+                                             v.Count.HasValue &&
+                                             v.Total.HasValue &&
+                                             !v.Minimum.HasValue &&
+                                             !v.Maximum.HasValue);
+            }
+        }
     }
 
     public class MetricValue

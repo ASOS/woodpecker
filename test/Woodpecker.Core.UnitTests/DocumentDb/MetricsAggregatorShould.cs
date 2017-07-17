@@ -14,16 +14,17 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
     {
         private readonly MetricsAggregator sut = new MetricsAggregator();
 
-        private const string MetricName = "The metric!";
+        private static readonly LocalizedString MetricName = new LocalizedString { Value = "The metric!" };
 
         [Fact]
         public void Throw_ArgumentException_If_Empty_Values()
         {
             // arrange
             var values = new MetricValue[0];
+            var metric = new Metric { Name = MetricName, MetricValues = values };
 
             // act & assert
-            Assert.Throws<ArgumentException>(() => sut.Aggregate(MetricName, values));
+            Assert.Throws<ArgumentException>(() => sut.Aggregate(metric));
         }
 
         [Fact]
@@ -34,10 +35,10 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue() };
 
             // act
-            var metric = sut.Aggregate(expectedName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
-            Assert.Equal(expectedName, metric.Name);
+            Assert.Equal(expectedName.Value, metric.Name);
         }
 
         [Fact]
@@ -54,14 +55,29 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(latestTimeStamp, metric.TimeStamp);
         }
 
         [Fact]
-        public void Return_Metric_With_Sum_Of_Counts()
+        public void Return_Metric_With_Max_Of_Counts_For_Cumulative_MetricValues()
+        {
+            // arrange
+            var values = Enumerable.Range(0, 10).Select(i => new MetricValue { Count = i, Total = 1, Average = 1 }).ToArray();
+
+            var expectedCount = values.Max(v => v.Count);
+
+            // act
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
+
+            // assert
+            Assert.Equal(expectedCount, metric.Count);
+        }
+
+        [Fact]
+        public void Return_Metric_With_Sum_Of_Counts_For_Non_Cumulative_MetricValues()
         {
             // arrange
             var values = Enumerable.Range(0, 10).Select(i => new MetricValue { Count = i }).ToArray();
@@ -69,7 +85,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var expectedCount = values.Sum(v => v.Count);
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedCount, metric.Count);
@@ -84,7 +100,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Count = 5 }, new MetricValue { Count = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedCount, metric.Count);
@@ -97,7 +113,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Count = null }, new MetricValue { Count = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Null(metric.Count);
@@ -112,7 +128,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var expectedMaximum = values.Max(v => v.Maximum);
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedMaximum, metric.Maximum);
@@ -127,7 +143,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Maximum = 5 }, new MetricValue { Maximum = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedMaximum, metric.Maximum);
@@ -140,7 +156,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Maximum = null }, new MetricValue { Maximum = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Null(metric.Maximum);
@@ -155,7 +171,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var expectedMinimum = values.Min(v => v.Minimum);
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedMinimum, metric.Minimum);
@@ -170,7 +186,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Minimum = 5 }, new MetricValue { Minimum = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedMinimum, metric.Minimum);
@@ -183,7 +199,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Minimum = null }, new MetricValue { Minimum = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Null(metric.Minimum);
@@ -198,7 +214,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var expectedAverage = values.Average(v => v.Average);
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedAverage, metric.Average);
@@ -213,7 +229,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Average = 5 }, new MetricValue { Average = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedAverage, metric.Average);
@@ -226,22 +242,36 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Average = null }, new MetricValue { Average = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Null(metric.Average);
         }
 
         [Fact]
-        public void Return_Metric_With_Max_Of_Totals()
+        public void Return_Metric_With_Max_Of_Totals_For_Cumulative_MetricValues()
         {
             // arrange
-            var values = Enumerable.Range(0, 10).Select(i => new MetricValue { Total = i }).ToArray();
+            var values = Enumerable.Range(0, 10).Select(i => new MetricValue { Total = i, Average = 1, Count = 1 }).ToArray();
 
             var expectedTotal = values.Max(v => v.Total);
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
+
+            // assert
+            Assert.Equal(expectedTotal, metric.Total);
+        }
+
+        [Fact]
+        public void Return_Metric_With_Sum_Of_Totals_For_NonCumulative_MetricValues()
+        {
+            // arrange
+            var values = Enumerable.Range(0, 10).Select(i => new MetricValue { Total = i }).ToArray();
+            var expectedTotal = values.Sum(v => v.Total);
+
+            // act
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedTotal, metric.Total);
@@ -256,7 +286,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Total = 5 }, new MetricValue { Total = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Equal(expectedTotal, metric.Total);
@@ -269,7 +299,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var values = new MetricValue[] { new MetricValue { Total = null }, new MetricValue { Total = null } };
 
             // act
-            var metric = sut.Aggregate(MetricName, values);
+            var metric = sut.Aggregate(new Metric { Name = MetricName, MetricValues = values });
 
             // assert
             Assert.Null(metric.Total);

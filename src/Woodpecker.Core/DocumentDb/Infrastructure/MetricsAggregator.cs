@@ -7,22 +7,27 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
 {
     public class MetricsAggregator
     {
-        public virtual MetricModel Aggregate(string name, MetricValue[] values)
+        private static readonly Func<IEnumerable<long?>, long?> Count_Sum = Enumerable.Sum;
+        private static readonly Func<IEnumerable<long?>, long?> Count_Max = Enumerable.Max;
+        private static readonly Func<IEnumerable<double?>, double?> Total_Sum = Enumerable.Sum;
+        private static readonly Func<IEnumerable<double?>, double?> Total_Max = Enumerable.Max;
+
+        public virtual MetricModel Aggregate(Metric source)
         {
-            if (!values.Any())
+            if (!source.MetricValues.Any())
             {
                 throw new ArgumentException("values cannot be empty", "values");
             }
 
             var metric = new MetricModel
             {
-                Name = name,
-                TimeStamp = values.Max(v => v.TimeStamp),
-                Count = GetLongValueOrNull(values.Select(v => v.Count), Enumerable.Sum),
-                Total = GetDoubleValueOrNull(values.Select(v => v.Total), Enumerable.Max),
-                Average = GetDoubleValueOrNull(values.Select(v => v.Average), Enumerable.Average),
-                Maximum = GetDoubleValueOrNull(values.Select(v => v.Maximum), Enumerable.Max),
-                Minimum = GetDoubleValueOrNull(values.Select(v => v.Minimum), Enumerable.Min),
+                Name = source.Name.Value,
+                TimeStamp = source.MetricValues.Max(v => v.TimeStamp),
+                Count = GetLongValueOrNull(source.MetricValues.Select(v => v.Count), source.IsCumulative ? Count_Max : Count_Sum),
+                Total = GetDoubleValueOrNull(source.MetricValues.Select(v => v.Total), source.IsCumulative ? Total_Max : Total_Sum),
+                Average = GetDoubleValueOrNull(source.MetricValues.Select(v => v.Average), Enumerable.Average),
+                Maximum = GetDoubleValueOrNull(source.MetricValues.Select(v => v.Maximum), Enumerable.Max),
+                Minimum = GetDoubleValueOrNull(source.MetricValues.Select(v => v.Minimum), Enumerable.Min),
             };
 
             return metric;

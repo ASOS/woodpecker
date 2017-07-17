@@ -41,7 +41,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var intervalInMinutes = 30;
             var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc);
 
-            var expectedMetrics = SetupExpectedMetrics();
+            var expectedMetrics = SetupExpectedMetrics(startUtc, intervalInMinutes);
 
             // Act
             var actualEntities = await this.sut.PeckAsync(peckSource);
@@ -58,7 +58,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var intervalInMinutes = 30;
             var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc);
 
-            SetupExpectedMetrics();
+            SetupExpectedMetrics(startUtc, intervalInMinutes);
 
             // Act
             var entities = await this.sut.PeckAsync(peckSource);
@@ -67,10 +67,8 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             AssertEntitiesHaveSamePartitionKey(entities);
         }
 
-        public IEnumerable<MetricModel> SetupExpectedMetrics(int n = 10)
+        public IEnumerable<MetricModel> SetupExpectedMetrics(DateTime startUtc, int intervalInMinutes, int n = 10)
         {
-            var startUtc = DateTime.Now;
-            var intervalInMinutes = 30;
             var expectedMetrics = GetMetricModels(n);
 
             var expectedMetricsRequest = new DocumentDbMetricsRequest(ResourceId, startUtc, startUtc.AddMinutes(intervalInMinutes));

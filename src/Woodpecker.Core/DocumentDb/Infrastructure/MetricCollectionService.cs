@@ -22,7 +22,7 @@ namespace Woodpecker.Core.DocumentDb.Infrastructure
             var response = await this.monitoringResourceClient.FetchMetrics(metricsRequest).ConfigureAwait(false);
 
             var aggregatedMetrics = response.Metrics.Where(m => m.MetricValues != null && m.MetricValues.Any())
-                .Select(m => metricsAggregator.Aggregate(m.Name.Value, m.MetricValues))
+                .Select(m => metricsAggregator.Aggregate(m))
                 .ToList();
 
             return aggregatedMetrics;

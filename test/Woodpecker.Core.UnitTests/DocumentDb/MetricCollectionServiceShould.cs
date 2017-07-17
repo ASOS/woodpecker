@@ -64,7 +64,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             await this.sut.CollectMetrics(_fakeMetricsRequest);
 
             // assert
-            A.CallTo(() => this.fakeMetricsAggregator.Aggregate(A<string>.Ignored, A<MetricValue[]>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => this.fakeMetricsAggregator.Aggregate(A<Metric>.Ignored)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             A.CallTo(() => this.fakeMonitoringResource.FetchMetrics(this._fakeMetricsRequest)).Returns(response);
 
             // Act
-            var actualMetrics = await this.sut.CollectMetrics( _fakeMetricsRequest);
+            var actualMetrics = await this.sut.CollectMetrics(_fakeMetricsRequest);
 
             // assert
             Assert.Equal(0, actualMetrics.Count());
@@ -104,7 +104,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             foreach (var metric in response.Metrics)
             {
                 var model = new MetricModel();
-                A.CallTo(() => this.fakeMetricsAggregator.Aggregate(metric.Name.Value, metric.MetricValues))
+                A.CallTo(() => this.fakeMetricsAggregator.Aggregate(metric))
                     .Returns(model);
 
                 models.Add(model);
