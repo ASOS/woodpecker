@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Woodpecker.Core.DocumentDb.Infrastructure
+namespace Woodpecker.Core.Metrics.Infrastructure
 {
     public interface ISecurityTokenProvider
     {

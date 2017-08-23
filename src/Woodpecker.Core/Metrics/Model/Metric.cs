@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-using Microsoft.ServiceBus.Management;
-
-using Newtonsoft.Json;
-
-namespace Woodpecker.Core.DocumentDb.Model
+namespace Woodpecker.Core.Metrics.Model
 {
     public class MetricModel
     {

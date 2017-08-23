@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Woodpecker.Core.DocumentDb.Model;
+using Woodpecker.Core.Metrics.Model;
 
-namespace Woodpecker.Core.DocumentDb.Infrastructure
+namespace Woodpecker.Core.Metrics.Infrastructure
 {
     public class MetricCollectionService : IMetricCollectionService
     {

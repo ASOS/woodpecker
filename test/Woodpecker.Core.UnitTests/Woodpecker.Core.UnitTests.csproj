@@ -93,10 +93,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentDb\DocumentDbSourcePeckerShould.cs" />
+    <Compile Include="DocumentDb\AzureMetricsApiSourcePeckerShould.cs" />
     <Compile Include="DocumentDb\MetricsAggregatorShould.cs" />
     <Compile Include="DocumentDb\ConfigurationMapperShould.cs" />
-    <Compile Include="DocumentDb\DocumentDbMetricInfoShould.cs" />
+    <Compile Include="DocumentDb\DocumentDbMetricsRequestShould.cs" />
     <Compile Include="DocumentDb\MetricCollectionServiceShould.cs" />
     <Compile Include="DocumentDb\UriFactoryShould.cs" />
     <Compile Include="DocumentDb\MonitoringResourceClientShould.cs" />

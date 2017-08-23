@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FakeItEasy;
-using Woodpecker.Core.DocumentDb;
-using Woodpecker.Core.DocumentDb.Infrastructure;
+using Woodpecker.Core.Metrics.Infrastructure;
 using Xunit;
 
 namespace Woodpecker.Core.UnitTests.DocumentDb

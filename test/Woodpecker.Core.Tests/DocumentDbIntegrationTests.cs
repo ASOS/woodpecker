@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Woodpecker.Core.DocumentDb;
-using Woodpecker.Core.DocumentDb.Configuration;
+using Woodpecker.Core.Metrics;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -30,13 +29,14 @@ namespace Woodpecker.Core.Tests
         public async Task CanReadDocumentDbMetrics()
         {
             // arrange
-            var pecker = new DocumentDbSourcePecker();
+            var pecker = new AzureMetricsApiSourcePecker();
             var source = new PeckSource
             {
                 SourceConnectionString = _connectionString,
                 LastOffset = DateTimeOffset.UtcNow.AddHours(-1),
                 IntervalMinutes = 30,
-                Name = "TheSourceName"
+                Name = "TheSourceName",
+                CustomConfig = ProviderNames.DocumentDB
             };
 
             // act

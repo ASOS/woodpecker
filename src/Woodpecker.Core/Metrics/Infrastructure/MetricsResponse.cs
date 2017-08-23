@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Woodpecker.Core.DocumentDb.Infrastructure
+namespace Woodpecker.Core.Metrics.Infrastructure
 {
     public class MetricsResponse
     {

@@ -1,6 +1,6 @@
-using Woodpecker.Core.DocumentDb.Infrastructure;
+using Woodpecker.Core.Metrics.Infrastructure;
 
-namespace Woodpecker.Core.Factory
+namespace Woodpecker.Core.Metrics.Factory
 {
     public class MetricCollectionServiceFactory :  IMetricCollectionServiceFactory
     {
@@ -11,7 +11,7 @@ namespace Woodpecker.Core.Factory
 
         private static IMonitoringApiClient CreateMonitoringApiClient(string tenantId, string clientId, string clientSecrect)
         {
-            return new MonitoringApiClient(new MonitoringSecurityProvider(tenantId, clientId, clientSecrect), new DocumentDb.Infrastructure.HttpClient());
+            return new MonitoringApiClient(new MonitoringSecurityProvider(tenantId, clientId, clientSecrect), new HttpClient());
         }
     }
 }

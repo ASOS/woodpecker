@@ -1,6 +1,6 @@
-using Woodpecker.Core.DocumentDb.Infrastructure;
+using Woodpecker.Core.Metrics.Infrastructure;
 
-namespace Woodpecker.Core.Factory
+namespace Woodpecker.Core.Metrics.Factory
 {
     public interface IMetricCollectionServiceFactory
     {

@@ -1,9 +1,7 @@
 ﻿using System;
 
 using FluentAssertions;
-
-using Woodpecker.Core.DocumentDb.Configuration;
-
+using Woodpecker.Core.Metrics.Configuration;
 using Xunit;
 
 namespace Woodpecker.Core.UnitTests.DocumentDb

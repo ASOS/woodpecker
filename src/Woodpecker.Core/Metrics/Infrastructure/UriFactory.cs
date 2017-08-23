@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Woodpecker.Core.DocumentDb.Infrastructure
+namespace Woodpecker.Core.Metrics.Infrastructure
 {
     public class UriFactory
     {

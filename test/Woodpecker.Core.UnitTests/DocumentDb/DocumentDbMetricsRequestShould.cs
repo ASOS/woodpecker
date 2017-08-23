@@ -1,10 +1,11 @@
 ﻿using System;
-using Woodpecker.Core.DocumentDb.Infrastructure;
+using Woodpecker.Core.Metrics.DocumentDb;
+using Woodpecker.Core.Metrics.Infrastructure;
 using Xunit;
 
 namespace Woodpecker.Core.UnitTests.DocumentDb
 {
-    public class DocumentDbMetricInfoShould
+    public class DocumentDbMetricsRequestShould
     {
         private string subscriptionId;
         private string resourceGroupName;
@@ -12,7 +13,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         private string databaseId;
         private string collectionId;
 
-        public DocumentDbMetricInfoShould()
+        public DocumentDbMetricsRequestShould()
         {
             this.subscriptionId = "mytestsubscription";
             this.resourceGroupName = "testresourcegroup";
@@ -77,22 +78,22 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         public void Set_The_Start_Time_And_End_Time_On_The_Object()
         {
             // Arrange
-            var startTime = new DateTime(2016,10,5);
-            var endTime = new DateTime(2016,11,5);
+            var startTime = new DateTime(2016, 10, 5);
+            var endTime = new DateTime(2016, 11, 5);
 
 
             // Act
-            var sut = this.Sut("",startTime,endTime);
-            
+            var sut = this.Sut("", startTime, endTime);
+
 
             // Assert
             Assert.Equal(sut.StartTimeUtc, startTime);
             Assert.Equal(sut.EndTimeUtc, endTime);
         }
 
-        private IMetricsRequest Sut(string resourceId,DateTime startTimeUtc = default(DateTime),DateTime endTimeUtc = default(DateTime))
+        private IMetricsRequest Sut(string resourceId, DateTime startTimeUtc = default(DateTime), DateTime endTimeUtc = default(DateTime))
         {
-            return new DocumentDbMetricsRequest(resourceId,startTimeUtc, endTimeUtc);
+            return new DocumentDbMetricsRequest(resourceId, startTimeUtc, endTimeUtc);
         }
     }
 }

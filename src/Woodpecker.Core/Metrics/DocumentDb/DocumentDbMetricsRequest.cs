@@ -1,6 +1,7 @@
 using System;
+using Woodpecker.Core.Metrics.Infrastructure;
 
-namespace Woodpecker.Core.DocumentDb.Infrastructure
+namespace Woodpecker.Core.Metrics.DocumentDb
 {
     public class DocumentDbMetricsRequest : IMetricsRequest
     {

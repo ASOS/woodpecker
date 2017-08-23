@@ -1,9 +1,8 @@
-﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-
-namespace Woodpecker.Core.DocumentDb.Infrastructure
+namespace Woodpecker.Core.Metrics.Infrastructure
 {
     public class MonitoringSecurityProvider : ISecurityTokenProvider
     {

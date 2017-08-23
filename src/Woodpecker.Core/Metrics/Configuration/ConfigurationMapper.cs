@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Woodpecker.Core.DocumentDb.Configuration
+namespace Woodpecker.Core.Metrics.Configuration
 {
     public class ConfigurationMapper
     {

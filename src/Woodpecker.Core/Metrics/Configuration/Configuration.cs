@@ -1,4 +1,4 @@
-﻿namespace Woodpecker.Core.DocumentDb.Configuration
+﻿namespace Woodpecker.Core.Metrics.Configuration
 {
     public class Configuration : IConfiguration
     {

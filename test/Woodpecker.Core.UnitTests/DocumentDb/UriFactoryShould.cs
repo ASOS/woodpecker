@@ -5,8 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using FakeItEasy;
 using FluentAssertions;
-using Woodpecker.Core.DocumentDb.Infrastructure;
-using Woodpecker.Core.DocumentDb.Model;
+using Woodpecker.Core.Metrics.Infrastructure;
 using Xunit;
 
 namespace Woodpecker.Core.UnitTests.DocumentDb

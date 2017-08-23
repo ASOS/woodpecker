@@ -6,15 +6,18 @@ using FakeItEasy;
 using FluentAssertions;
 using FluentAssertions.Common;
 using Microsoft.WindowsAzure.Storage.Table;
-using Woodpecker.Core.DocumentDb;
-using Woodpecker.Core.DocumentDb.Infrastructure;
-using Woodpecker.Core.DocumentDb.Model;
-using Woodpecker.Core.Factory;
+using Woodpecker.Core.Metrics;
+using Woodpecker.Core.Metrics.DocumentDb;
+using Woodpecker.Core.Metrics.Factory;
+using Woodpecker.Core.Metrics.Infrastructure;
+using Woodpecker.Core.Metrics.Model;
 using Xunit;
+using System.Threading.Tasks;
+using Xunit.Sdk;
 
 namespace Woodpecker.Core.UnitTests.DocumentDb
 {
-    public class DocumentDbSourcePeckerShould
+    public class AzureMetricsApiSourcePeckerShould
     {
         private const string ConnectionString = "TenantId=MyTestTenant1.onmicrosoft.com;ClientId=B6BC8DAF-C802-457B-B906-4E9A9483A36C;ClientSecret=cfrWa1+UAHSdas23hsdlkjf8hdiashdasd=;ResourceId=subscriptions/mySub/resourceGroups/myRG/providers/Microsoft.DocumentDB/databaseAccounts/myDBAcc/databases/myDB12==/collections/myColl234=";
 
@@ -24,22 +27,22 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         private ISourcePecker sut;
         private IMetricCollectionService fakemetricCollectionService;
 
-        public DocumentDbSourcePeckerShould()
+        public AzureMetricsApiSourcePeckerShould()
         {
             this.fakemetricCollectionService = A.Fake<IMetricCollectionService>();
             this.fakemetricCollectionServiceFactory = A.Fake<IMetricCollectionServiceFactory>();
             A.CallTo(() => this.fakemetricCollectionServiceFactory.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).Returns(this.fakemetricCollectionService);
 
-            this.sut = new DocumentDbSourcePecker(this.fakemetricCollectionServiceFactory);
+            this.sut = new AzureMetricsApiSourcePecker(this.fakemetricCollectionServiceFactory);
         }
 
         [Fact]
-        public async void Return_TableEntities_For_Collected_Metrics()
+        public async Task Return_TableEntities_For_Collected_Metrics()
         {
             // Arrange
             var startUtc = DateTime.Now;
             var intervalInMinutes = 30;
-            var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc);
+            var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc, ProviderNames.DocumentDB);
 
             var expectedMetrics = SetupExpectedMetrics(startUtc, intervalInMinutes);
 
@@ -51,12 +54,12 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         }
 
         [Fact]
-        public async void Return_All_Entities_With_Same_PartitionKey()
+        public async Task Return_All_Entities_With_Same_PartitionKey()
         {
             // Arrange
             var startUtc = DateTime.Now;
             var intervalInMinutes = 30;
-            var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc);
+            var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc, ProviderNames.DocumentDB);
 
             SetupExpectedMetrics(startUtc, intervalInMinutes);
 
@@ -67,7 +70,21 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             AssertEntitiesHaveSamePartitionKey(entities);
         }
 
-        public IEnumerable<MetricModel> SetupExpectedMetrics(DateTime startUtc, int intervalInMinutes, int n = 10)
+        [Fact]
+        public async Task Throw_ArgumentException_When_Invalid_Provider()
+        {
+            // Arrange
+            var startUtc = DateTime.Now;
+            var intervalInMinutes = 30;
+            var peckSource = GetPeckSource(ConnectionString, intervalInMinutes, "azure-stk-documentdb", startUtc, "A completely different provider");
+
+            var expectedMetrics = SetupExpectedMetrics(startUtc, intervalInMinutes);
+
+            // Act
+            await Xunit.Assert.ThrowsAsync<ArgumentException>(() => this.sut.PeckAsync(peckSource));
+        }
+
+        private IEnumerable<MetricModel> SetupExpectedMetrics(DateTime startUtc, int intervalInMinutes, int n = 10)
         {
             var expectedMetrics = GetMetricModels(n);
 
@@ -154,14 +171,15 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             return metrics;
         }
 
-        private static PeckSource GetPeckSource(string connectionString, int intervalInMinutes, string name, DateTimeOffset dateTimeOffset)
+        private static PeckSource GetPeckSource(string connectionString, int intervalInMinutes, string name, DateTimeOffset dateTimeOffset, string providerName)
         {
             return new PeckSource()
             {
                 Name = name,
                 SourceConnectionString = connectionString,
                 IntervalMinutes = intervalInMinutes,
-                LastOffset = dateTimeOffset
+                LastOffset = dateTimeOffset,
+                CustomConfig = providerName
             };
         }
     }
