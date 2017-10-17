@@ -54,6 +54,14 @@
       <HintPath>..\..\packages\Microsoft.Data.Services.Client.5.2.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.13.9.1126, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.9\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform, Version=3.13.9.1126, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.9\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WindowsAzure.ServiceBus.2.1.0.0\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -73,6 +81,27 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>..\..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -87,6 +116,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\PeckSourceProcessor.cs" />
+    <Compile Include="Metrics\AzureMetricsApiSourcePecker.cs" />
+    <Compile Include="Metrics\Configuration\Configuration.cs" />
+    <Compile Include="Metrics\Configuration\ConfigurationMapper.cs" />
+    <Compile Include="Metrics\Configuration\IConfiguration.cs" />
+    <Compile Include="Metrics\DocumentDb\DocumentDbMetricsRequest.cs" />
+    <Compile Include="Metrics\Factory\IMetricCollectionServiceFactory.cs" />
+    <Compile Include="Metrics\Factory\MetricCollectionServiceFactory.cs" />
+    <Compile Include="Metrics\Infrastructure\IHttpClient.cs" />
+    <Compile Include="Metrics\Infrastructure\IMetricCollectionService.cs" />
+    <Compile Include="Metrics\Infrastructure\IMetricsRequest.cs" />
+    <Compile Include="Metrics\Infrastructure\IMonitoringApiClient.cs" />
+    <Compile Include="Metrics\Infrastructure\ISecurityTokenProvider.cs" />
+    <Compile Include="Metrics\Infrastructure\Metric.cs" />
+    <Compile Include="Metrics\Infrastructure\MetricCollectionService.cs" />
+    <Compile Include="Metrics\Infrastructure\MetricsAggregator.cs" />
+    <Compile Include="Metrics\Infrastructure\MetricsResponse.cs" />
+    <Compile Include="Metrics\Infrastructure\MonitoringApiClient.cs" />
+    <Compile Include="Metrics\Infrastructure\MonitoringSecurityProvider.cs" />
+    <Compile Include="Metrics\ProviderNames.cs" />
+    <Compile Include="Metrics\Infrastructure\UriFactory.cs" />
+    <Compile Include="Metrics\Model\Metric.cs" />
     <Compile Include="PeckSource.cs" />
     <Compile Include="Azure\QueueDescriptionsExtensions.cs" />
     <Compile Include="Azure\AzureBusSourcePecker.cs" />
