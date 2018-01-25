@@ -22,10 +22,10 @@ namespace Woodpecker.Core.Metrics.Infrastructure
             var start = metricsRequest.StartTimeUtc.ToString("yyyy-MM-ddTHH:mm:00.000Z");
             var end = metricsRequest.EndTimeUtc.ToString("yyyy-MM-ddTHH:mm:00.000Z");
 
-            var metricsSelector = metricsRequest.MetricsToGather.Select(m => $"name.value eq '{m}'");
-            var metricsFilter = $"{string.Join(" or ", metricsSelector)}";
+            var metricsSelector = metricsRequest.MetricsToGather.Select(m => string.Format("name.value eq '{0}'", m));
+            var metricsFilter = string.Join(" or ", metricsSelector);
 
-            var filter = $"({metricsFilter}) and endTime eq {end} and startTime eq {start} and timeGrain eq duration'PT1M'";
+            var filter = string.Format("({0}) and endTime eq {1} and startTime eq {2} and timeGrain eq duration'PT1M'", metricsFilter, end, start);
 
             return filter;
         }
