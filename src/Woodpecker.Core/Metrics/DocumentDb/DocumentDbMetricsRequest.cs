@@ -5,7 +5,7 @@ namespace Woodpecker.Core.Metrics.DocumentDb
 {
     public class DocumentDbMetricsRequest : IMetricsRequest
     {
-        public DocumentDbMetricsRequest(string resourceId,DateTime startTimeUtc, DateTime endTimeUtc)
+        public DocumentDbMetricsRequest(string resourceId, DateTime startTimeUtc, DateTime endTimeUtc)
         {
             StartTimeUtc = startTimeUtc;
             EndTimeUtc = endTimeUtc;
@@ -30,10 +30,11 @@ namespace Woodpecker.Core.Metrics.DocumentDb
                         "Throttled Requests",
                         "Total Request Units",
                         "Total Requests",
-                    };}
+                    };
+            }
         }
-        public string ResourceId { get; }
-        public DateTime StartTimeUtc { get; }
-        public DateTime EndTimeUtc { get; }
+        public string ResourceId { get; private set; }
+        public DateTime StartTimeUtc { get; private set; }
+        public DateTime EndTimeUtc { get; private set; }
     }
 }
