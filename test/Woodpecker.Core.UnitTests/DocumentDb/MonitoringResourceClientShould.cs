@@ -91,7 +91,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
 
             // Assert
             A.CallTo(() => this.fakeHttpClient.SendAsync(A<HttpRequestMessage>.That.Matches(x => ShouldMatchHttpClient(x, expectedHttpRequest)))).MustHaveHappened(Repeated.Exactly.Once);
-            actual.ShouldBeEquivalentTo(expectedResponse);
+            actual.Should().BeEquivalentTo(expectedResponse);
         }
 
         private static bool ShouldMatchHttpClient(HttpRequestMessage actual, HttpRequestMessage expected)
@@ -110,7 +110,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         {
             try
             {
-                accessToken.ShouldBeEquivalentTo(httpRequestMessage.Headers.Authorization.ToString());
+                accessToken.Should().BeEquivalentTo(httpRequestMessage.Headers.Authorization.ToString());
                 return true;
             }
             catch

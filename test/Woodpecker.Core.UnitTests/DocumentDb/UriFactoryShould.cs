@@ -39,7 +39,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
 
 
             // Assert
-            actualUri.ShouldBeEquivalentTo(expectedUri);
+            actualUri.Should().BeEquivalentTo(expectedUri);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var actualResult = Sut.Map(configurationString);
 
             //Assert
-            expectedResult.ShouldBeEquivalentTo(actualResult);
+            expectedResult.Should().BeEquivalentTo(actualResult);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
             var actualResult = Sut.Map(configurationString);
 
             //Assert
-            expectedResult.ShouldBeEquivalentTo(actualResult);
+            expectedResult.Should().BeEquivalentTo(actualResult);
         }
 
         [Fact]
