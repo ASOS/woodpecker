@@ -145,7 +145,7 @@ namespace Woodpecker.Core.UnitTests.DocumentDb
         {
             try
             {
-                actual.ShouldBeEquivalentTo(expected);
+                actual.Should().BeEquivalentTo(expected);
                 return true;
             }
             catch
